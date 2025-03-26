@@ -1,4 +1,24 @@
+
+using BlogApp.Data.Data;
+using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+if (builder.Environment.IsDevelopment())
+{
+    Env.Load();
+}
+
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+builder.Services.AddDbContext<BlogAppDbContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("LocalDatabase"));
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
