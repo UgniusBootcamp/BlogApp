@@ -1,6 +1,9 @@
 
 using BlogApp.Data.Data;
+using BlogApp.Data.Entities;
+using BlogApp.Data.Helpers.Settings;
 using DotNetEnv;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,10 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
+builder.Services.Configure<List<DefaultUser>>(
+    builder.Configuration.GetSection("DefaultUsers")
+);
+
 builder.Services.AddDbContext<BlogAppDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("LocalDatabase"));
@@ -22,6 +29,21 @@ builder.Services.AddDbContext<BlogAppDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+//Add services
+builder.Services.AddScoped<DatabaseSeeder>();
+
+
+//Add Identity
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<BlogAppDbContext>()
+    .AddDefaultTokenProviders();
+
+//Add Auth
+builder.Services.AddAuthentication();
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -33,6 +55,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+using var scope = app.Services.CreateScope();
+if (app.Environment.IsProduction())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<BlogAppDbContext>();
+    dbContext.Database.Migrate();
+}
+
+var dbSeeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+await dbSeeder.SeedAsync();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -43,5 +75,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.Run();
