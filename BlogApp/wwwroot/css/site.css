@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import 'tailwindcss';
+
+@theme {
+    --color-primary-50: #f2f6fb;
+    --color-primary-100: #dce3ed;
+    --color-primary-200: #bac6d7;
+    --color-primary-300: #94a1bb;
+    --color-primary-400: #6f7c9f;
+    --color-primary-500: #59688a;
+    --color-primary-600: #44506f;
+    --color-primary-700: #313d56;
+    --color-primary-800: #212a3d;
+    --color-primary-900: #151c2b;
+    --color-primary-950: #0b101d;
+
+    --font-roboto: 'Roboto', sans-serif;
+}
