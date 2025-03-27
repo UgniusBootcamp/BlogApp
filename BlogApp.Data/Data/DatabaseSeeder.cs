@@ -46,6 +46,7 @@ namespace BlogApp.Data.Data
                             Email = user.Email,
                             Name = user.UserName,
                             Surname = user.UserName,
+                            EmailConfirmed = true
                         };
 
                         var createUserResult = await userManager.CreateAsync(newUser, user.Password);

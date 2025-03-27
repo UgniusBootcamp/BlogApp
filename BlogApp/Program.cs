@@ -1,4 +1,6 @@
 
+using BlogApp.Business.Interfaces;
+using BlogApp.Business.Services;
 using BlogApp.Data.Data;
 using BlogApp.Data.Entities;
 using BlogApp.Data.Helpers.Settings;
@@ -22,10 +24,15 @@ builder.Services.Configure<List<DefaultUser>>(
     builder.Configuration.GetSection("DefaultUsers")
 );
 
+builder.Services.Configure<EmailConfiguration>(
+    builder.Configuration.GetSection("Email")
+);
+
 builder.Services.AddDbContext<BlogAppDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("LocalDatabase"));
 });
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -33,6 +40,7 @@ builder.Services.AddControllersWithViews();
 
 //Add services
 builder.Services.AddScoped<DatabaseSeeder>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 //Add Identity
