@@ -12,5 +12,6 @@ namespace BlogApp.Data.Entities
         [Required]
         [StringLength(50)]
         public string Surname { get; set; } = null!;
+
     }
 }

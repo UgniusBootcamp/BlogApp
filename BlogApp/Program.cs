@@ -1,9 +1,13 @@
 
+using AutoMapper;
 using BlogApp.Business.Interfaces;
 using BlogApp.Business.Services;
 using BlogApp.Data.Data;
 using BlogApp.Data.Entities;
+using BlogApp.Data.Helpers.Mapper;
 using BlogApp.Data.Helpers.Settings;
+using BlogApp.Data.Interfaces;
+using BlogApp.Data.Repositories;
 using DotNetEnv;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +45,12 @@ builder.Services.AddControllersWithViews();
 //Add services
 builder.Services.AddScoped<DatabaseSeeder>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IValidationService, ValidationService>();
+
+//Add repos
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 
 //Add Identity
@@ -49,7 +59,14 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddDefaultTokenProviders();
 
 //Add Auth
-builder.Services.AddAuthentication();
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("MyCookieAuth", options =>
+    {
+        options.Cookie.Name = "CookieAuth";
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+        options.SlidingExpiration = false;
+        options.LoginPath = "/Account/Login";
+    });
 
 builder.Services.AddAuthorization();
 

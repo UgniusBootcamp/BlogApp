@@ -35,7 +35,7 @@ namespace BlogApp.Business.Services
                 Text = String.Format(@"
                 <html>
                     <body style='font-family:Arial, sans-serif; color:#444;'>
-                        <h2 style='color:#0055cc; font-size:24px;'>{0}</h2>
+                        {0}
                         <p style='font-size:16px;'>Thanks for using our blog app system!</p>
                     </body>
                 </html>", message.Content)
