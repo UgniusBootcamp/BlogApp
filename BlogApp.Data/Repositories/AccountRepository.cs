@@ -4,6 +4,7 @@ using BlogApp.Data.Entities;
 using BlogApp.Data.Helpers.Exceptions;
 using BlogApp.Data.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogApp.Data.Repositories
 {
@@ -129,6 +130,14 @@ namespace BlogApp.Data.Repositories
         public async Task<bool> UpdateUserAsync(User user)
         {
             return (await userManager.UpdateAsync(user)).Succeeded;
+        }
+
+        public async Task<List<string?>> FindSimilarUsernamesAsync(string userName)
+        {
+            return await context.Users
+                .Where(user => user.UserName != null && user.UserName.StartsWith(userName))
+                .Select(user => user.UserName)
+                .ToListAsync();
         }
     }
 }

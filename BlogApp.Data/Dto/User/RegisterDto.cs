@@ -5,6 +5,14 @@ namespace BlogApp.Data.Dto.User
     public class RegisterDto
     {
         [Required]
+        [StringLength(50)]
+        public string Name { get; set; } = null!;
+
+        [Required]
+        [StringLength(50)]
+        public string Surname { get; set; } = null!;
+
+        [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = null!;
 

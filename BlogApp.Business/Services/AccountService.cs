@@ -85,6 +85,7 @@ namespace BlogApp.Business.Services
             validationService.ValidateRegisterPassword(registerDto.Password, registerDto.ConfirmPassword);
 
             var newUser = mapper.Map<User>(registerDto);
+            newUser.UserName = await GenerateUsername(registerDto.Name, registerDto.Surname);
 
             var created = await accountRepository.CreateUserAsync(newUser, registerDto.Password, UserRoles.BlogUser);
 
@@ -160,6 +161,34 @@ namespace BlogApp.Business.Services
             dto.Roles = await accountRepository.GetUserRolesAsync(mapped);
 
             return dto;
+        }
+
+        private async Task<string> GenerateUsername(string name, string surname)
+        {
+            var baseUsername = name.ToLower().Substring(0, Math.Min(3, name.Length)) +
+                               surname.ToLower().Substring(0, Math.Min(3, surname.Length));
+
+            var existingUsernames = await accountRepository.FindSimilarUsernamesAsync(baseUsername);
+
+            var usedNumbers = existingUsernames
+                .Where(u => u.StartsWith(baseUsername))
+                .Select(u =>
+                {
+                    var suffix = u.Substring(baseUsername.Length);
+                    return int.TryParse(suffix, out var num) ? num : (int?)null;
+                })
+                .Where(n => n.HasValue)
+                .Select(n => n.Value)
+                .ToHashSet();
+
+            var number = 1;
+
+            while (usedNumbers.Contains(number))
+            {
+                number++;
+            }
+
+            return existingUsernames.Contains(baseUsername) ? baseUsername + number : baseUsername;
         }
     }
 

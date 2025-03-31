@@ -71,5 +71,12 @@ namespace BlogApp.Data.Interfaces
         /// <param name="user">user to update</param>
         /// <returns>updated user</returns>
         Task<bool> UpdateUserAsync(User user);
+
+        /// <summary>
+        /// Method to get similar usernames
+        /// </summary>
+        /// <param name="userName">base username</param>
+        /// <returns>similar usernames</returns>
+        public Task<List<string?>> FindSimilarUsernamesAsync(string userName);
     }
 }
