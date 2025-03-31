@@ -1,4 +1,5 @@
 ﻿using BlogApp.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlogApp.Data.Interfaces
 {
@@ -63,5 +64,12 @@ namespace BlogApp.Data.Interfaces
         /// <param name="user">user</param>
         /// <returns>true if confirmed, false if not</returns>
         Task<bool> IsEmailConfirmedAsync(User user);
+
+        /// <summary>
+        /// Method for user update
+        /// </summary>
+        /// <param name="user">user to update</param>
+        /// <returns>updated user</returns>
+        Task<bool> UpdateUserAsync(User user);
     }
 }

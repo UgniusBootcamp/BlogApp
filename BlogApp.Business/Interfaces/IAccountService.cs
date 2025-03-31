@@ -22,19 +22,40 @@ namespace BlogApp.Business.Interfaces
         public Task<ClaimsPrincipal> LoginAsync(LoginDto loginDto);
 
         /// <summary>
-        /// Method to create email confirmation message
-        /// </summary>
-        /// <param name="user">user</param>
-        /// <param name="uri">uri to navigate</param>
-        /// <returns>message</returns>
-        public Task<Message> CreateConfirmationMessageAsync(User user, string uri);
-
-        /// <summary>
         /// Method for email confirmation
         /// </summary>
         /// <param name="email">email</param>
         /// <param name="token">token</param>
         /// <returns>email is confirmed</returns>
         public Task ConfirmEmailAsync(string email, string token);
+
+        /// <summary>
+        /// Method to get user by email
+        /// </summary>
+        /// <param name="email">email</param>
+        /// <returns>user</returns>
+        public Task<User> GetUserByEmailAsync(string email);
+
+        /// <summary>
+        /// Method to reset password
+        /// </summary>
+        /// <param name="passwordResetConfirm">passwordReset</param>
+        /// <returns>reset password</returns>
+        public Task ResetPasswordAsync(PasswordResetConfirmDto passwordResetConfirm);
+
+        /// <summary>
+        /// Method to get user by id
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <returns>user dto</returns>
+        public Task<UserDto> GetUserByIdAsync(string userId);
+
+        /// <summary>
+        /// Method to update user
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <param name="userDto">update dto</param>
+        /// <returns>updated user</returns>
+        public Task<UserDto> UpdateUserAsync(string userId, UserUpdateDto userDto);
     }
 }

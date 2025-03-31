@@ -8,5 +8,7 @@
         public const string EmailIsNotConfirmed = "Email is not confirmed";
         public const string UsersNotFound = "User is not found";
         public const string InvalidEmailConfrimationRequest = "Invalid Email Confirmation Request";
+        public const string InvalidPasswordResetRequest = "Invalid Password Reset Request";
+        public const string UserUpdateFailed = "User update failed";
     }
 }

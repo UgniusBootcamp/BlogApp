@@ -125,5 +125,10 @@ namespace BlogApp.Data.Repositories
         {
             return await userManager.IsEmailConfirmedAsync(user);
         }
+
+        public async Task<bool> UpdateUserAsync(User user)
+        {
+            return (await userManager.UpdateAsync(user)).Succeeded;
+        }
     }
 }

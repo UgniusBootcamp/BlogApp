@@ -91,24 +91,13 @@ namespace BlogApp.Business.Services
             return user;
         }
 
-        public async Task<Message> CreateConfirmationMessageAsync(User user, string uri)
-        {
-            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            var param = new Dictionary<string, string?>
-            {
-                {"token", token },
-                {"email", user.Email }
-            };
-
-            var callback = QueryHelpers.AddQueryString(uri, param);
-            string body = String.Format(
-                "<button style='color:#0055cc; font-size:24px;' onclick=\"window.location.href='{0}'\">Confirm Email</button>",callback);
-
-            var message = new Message([user.Email!], "Email Confirmation", body);
-
-            return message;
-        }
-
+        /// <summary>
+        /// Method for email confirmation
+        /// </summary>
+        /// <param name="email">email</param>
+        /// <param name="token">token</param>
+        /// <exception cref="NotFoundException">if user not found</exception>
+        /// <exception cref="Exception">if process not successful</exception>
         public async Task ConfirmEmailAsync(string email, string token)
         {
             var user = await accountRepository.FindUserByEmailAsync(email);
@@ -119,6 +108,58 @@ namespace BlogApp.Business.Services
 
             if (!confirmResult.Succeeded)
                 throw new Exception(ServiceConstants.InvalidEmailConfrimationRequest);
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            var user = await accountRepository.FindUserByEmailAsync(email);
+            if(user == null)
+                throw new NotFoundException(ServiceConstants.UsersNotFound);
+
+            return user;
+        }
+
+        public async Task ResetPasswordAsync(PasswordResetConfirmDto passwordResetConfirm)
+        {
+            var user = await accountRepository.FindUserByEmailAsync(passwordResetConfirm.Email);
+            if(user == null)
+                throw new NotFoundException(ServiceConstants.UsersNotFound);
+
+            var resetResult = await userManager.ResetPasswordAsync(user, passwordResetConfirm.Token, passwordResetConfirm.Password);
+
+            if (!resetResult.Succeeded)
+                throw new Exception(ServiceConstants.InvalidPasswordResetRequest);
+        }
+
+        public async Task<UserDto> GetUserByIdAsync(string userId)
+        {
+            var user = await accountRepository.FindUserByIdAsync(userId);
+            if(user == null)
+                throw new NotFoundException(ServiceConstants.UsersNotFound);
+
+            var mapped = mapper.Map<UserDto>(user);
+            mapped.Roles = await accountRepository.GetUserRolesAsync(user);
+
+            return mapped;
+        }
+
+        public async Task<UserDto> UpdateUserAsync(string userId, UserUpdateDto userDto)
+        {
+            var user = await accountRepository.FindUserByIdAsync(userId);
+            if(user == null)
+                throw new NotFoundException(ServiceConstants.UsersNotFound);
+
+            var mapped = mapper.Map(userDto, user);
+
+            var result = await accountRepository.UpdateUserAsync(user);
+            if (!result)
+                throw new Exception(ServiceConstants.UserUpdateFailed);
+
+            var dto = mapper.Map<UserDto>(mapped);
+
+            dto.Roles = await accountRepository.GetUserRolesAsync(mapped);
+
+            return dto;
         }
     }
 
