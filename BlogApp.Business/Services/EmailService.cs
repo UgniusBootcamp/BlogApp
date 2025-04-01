@@ -5,7 +5,6 @@ using BlogApp.Data.Helpers.Email;
 using BlogApp.Data.Helpers.Settings;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
@@ -43,6 +42,8 @@ namespace BlogApp.Business.Services
 
             return emailMessage;
         }
+
+
 
         private async Task SendAsync(MimeMessage message) 
         {

@@ -10,5 +10,8 @@
         public const string InvalidEmailConfrimationRequest = "Invalid Email Confirmation Request";
         public const string InvalidPasswordResetRequest = "Invalid Password Reset Request";
         public const string UserUpdateFailed = "User update failed";
+        public const string SingInFailed = "Sign in failed";
+        public const string SignInFailedMessage = "Sign in failed. Please check your credentials and try again.";
+        public const string ArgumentsCannotBeNull = "Arguments cannot be null";
     }
 }

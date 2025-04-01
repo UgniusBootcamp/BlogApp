@@ -9,9 +9,7 @@ using BlogApp.Data.Helpers.Exceptions;
 using BlogApp.Data.Helpers.Roles;
 using BlogApp.Data.Interfaces;
 using BlogApp.Data.Repositories;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.WebUtilities;
 
 namespace BlogApp.Business.Services
 {
@@ -19,54 +17,34 @@ namespace BlogApp.Business.Services
         IAccountRepository accountRepository,
         UserManager<User> userManager,
         IMapper mapper,
+        SignInManager<User> signInManager,
         IValidationService validationService
         ) : IAccountService
     {
+
         /// <summary>
         /// Method for login
         /// </summary>
         /// <param name="loginDto">login data</param>
         /// <returns>access token info</returns>
-        public async Task<ClaimsPrincipal> LoginAsync(LoginDto loginDto)
+        public async Task LoginAsync(LoginDto loginDto)
         {
             var user = await accountRepository.FindUserByUsernameAsync(loginDto.Credentials) ??
                 await accountRepository.FindUserByEmailAsync(loginDto.Credentials);
 
             if (user == null)
-                throw new UnauthorizedException(ServiceConstants.InvalidCredentials);
+                throw new UnauthorizedException(ServiceConstants.SignInFailedMessage);
 
             var isPasswordValid = await accountRepository.IsPasswordValidAsync(user, loginDto.Password);
 
             if (!isPasswordValid)
-                throw new UnauthorizedException(ServiceConstants.InvalidCredentials);
+                throw new UnauthorizedException(ServiceConstants.SignInFailedMessage);
 
             var isEmailConfirmed = await accountRepository.IsEmailConfirmedAsync(user);
             if (!isEmailConfirmed)
                 throw new UnauthorizedException(ServiceConstants.EmailIsNotConfirmed);
 
-            return await CreateUserClaimsAsync(user);
-        }
-
-        private async Task<ClaimsPrincipal> CreateUserClaimsAsync(User user)
-        {
-            var userRoles = await accountRepository.GetUserRolesAsync(user);
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Email, user.Email!)
-            };
-
-            foreach (var role in userRoles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
-            }
-
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-
-            return principal;
+            await signInManager.SignInAsync(user, isPersistent: true);
         }
 
 
@@ -89,7 +67,7 @@ namespace BlogApp.Business.Services
 
             var created = await accountRepository.CreateUserAsync(newUser, registerDto.Password, UserRoles.BlogUser);
 
-            return user;
+            return created;
         }
 
         /// <summary>
@@ -189,6 +167,11 @@ namespace BlogApp.Business.Services
             }
 
             return existingUsernames.Contains(baseUsername) ? baseUsername + number : baseUsername;
+        }
+
+        public async Task LogOutAsync()
+        {
+            await signInManager.SignOutAsync();
         }
     }
 

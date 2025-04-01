@@ -8,6 +8,7 @@ using BlogApp.Data.Helpers.Mapper;
 using BlogApp.Data.Helpers.Settings;
 using BlogApp.Data.Interfaces;
 using BlogApp.Data.Repositories;
+using BlogApp.Infrastructure;
 using DotNetEnv;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -39,8 +40,11 @@ builder.Services.AddDbContext<BlogAppDbContext>(options =>
 
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddDataAnnotationsLocalization();
 
+//Exception
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 //Add services
 builder.Services.AddScoped<DatabaseSeeder>();
@@ -48,6 +52,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 
 //Add repos
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -58,16 +63,16 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<BlogAppDbContext>()
     .AddDefaultTokenProviders();
 
-//Add Auth
-builder.Services.AddAuthentication("CookieAuth")
-    .AddCookie("MyCookieAuth", options =>
-    {
-        options.Cookie.Name = "CookieAuth";
-        options.ExpireTimeSpan = TimeSpan.FromDays(1);
-        options.SlidingExpiration = false;
-        options.LoginPath = "/Account/Login";
-    });
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.ExpireTimeSpan = TimeSpan.FromDays(1);
+    options.Cookie.Name = "AppAuth";
+});
 
+//Add Auth
+builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
@@ -93,9 +98,9 @@ await dbSeeder.SeedAsync();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
+app.UseExceptionHandler();
 
-app.UseAuthorization();
+app.UseRouting();
 
 app.MapControllerRoute(
     name: "default",

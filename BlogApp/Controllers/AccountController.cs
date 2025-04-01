@@ -1,61 +1,92 @@
 ﻿using BlogApp.Business.Interfaces;
 using BlogApp.Data.Dto.User;
-using Microsoft.AspNetCore.Authentication;
+using BlogApp.Data.Helpers.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogApp.Controllers
 {
+    [Route("[controller]")]
     public class AccountController(IAccountService accountService, IEmailService emailService, IMessageService messageService) : Controller
     {
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            var principal = await accountService.LoginAsync(loginDto);
+            if (!ModelState.IsValid)
+                return View(loginDto);
 
-            if (principal != null) 
-            {
-                await HttpContext.SignInAsync("CookieAuth", principal, new AuthenticationProperties
-                {
-                    IsPersistent = true,
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1)
-                });
-
-                return RedirectToAction("Index", "Home");
+            try 
+            { 
+                await accountService.LoginAsync(loginDto); 
             }
+            catch (UnauthorizedException ex)
+            {
+                ModelState.AddModelError("Password", ex.Message);
+                return View(loginDto);
+            }
+            TempData["SnackbarMessage"] = "Log in Successful!";
 
-            return View(); 
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet("Login")]
         public IActionResult Login()
         {
-            return View();
+            if(User.Identity?.IsAuthenticated == true)
+                return RedirectToAction("Index", "Home");
+
+            return View(new LoginDto());
         }
 
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync("MyCookieAuth");
+            await accountService.LogOutAsync();
+
+            TempData["SnackbarMessage"] = "Log out Successful!";
+
             return RedirectToAction("Login");
         }
 
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            var user = await accountService.RegisterAsync(registerDto);
+            if(!ModelState.IsValid)
+                return View(registerDto);
 
-            var confirmationMessage = await messageService.CreateConfirmationMessageAsync(user, registerDto.ClientUri!);
+            try
+            {
+                var user = await accountService.RegisterAsync(registerDto);
 
-            await emailService.SendEmailAsync(confirmationMessage);
+                if(user != null)
+                {
+                    var route = Url.Action("EmailConfirmation", "Account", null, Request.Scheme);
 
-            return RedirectToAction("Login");
+                    var confirmationMessage = await messageService.CreateConfirmationMessageAsync(user, route!);
+
+                    await emailService.SendEmailAsync(confirmationMessage);
+
+                    TempData["SnackbarMessage"] = "Confirmation Email has been sent. Chech Your Inbox.";
+
+                    return RedirectToAction("Login");
+                }
+            }
+            catch (UnauthorizedException ex)
+            {
+                ModelState.AddModelError("Email", ex.Message);
+                return View(registerDto);
+            }
+
+            return View(registerDto);
         }
 
         [HttpGet("Register")]
         public IActionResult Register()
         {
-            return View();
+            if (User.Identity?.IsAuthenticated == true)
+                return RedirectToAction("Index", "Home");
+
+            return View(new RegisterDto());
         }
 
         [HttpGet("EmailConfirmation")]
@@ -63,7 +94,14 @@ namespace BlogApp.Controllers
         {
             await accountService.ConfirmEmailAsync(email, token);
 
-            return RedirectToAction("Login");
+            return View();
+        }
+
+        [HttpGet]
+        [Route("PasswordReset")]
+        public IActionResult PasswordReset()
+        {
+            return View();
         }
 
         [HttpPost]

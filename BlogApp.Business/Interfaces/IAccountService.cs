@@ -19,7 +19,7 @@ namespace BlogApp.Business.Interfaces
         /// </summary>
         /// <param name="loginDto">login data</param>
         /// <returns>access token info</returns>
-        public Task<ClaimsPrincipal> LoginAsync(LoginDto loginDto);
+        public Task LoginAsync(LoginDto loginDto);
 
         /// <summary>
         /// Method for email confirmation
@@ -57,5 +57,10 @@ namespace BlogApp.Business.Interfaces
         /// <param name="userDto">update dto</param>
         /// <returns>updated user</returns>
         public Task<UserDto> UpdateUserAsync(string userId, UserUpdateDto userDto);
+
+        /// <summary>
+        /// Method for logging out
+        /// </summary>
+        public Task LogOutAsync();
     }
 }
