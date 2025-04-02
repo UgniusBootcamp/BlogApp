@@ -101,29 +101,54 @@ namespace BlogApp.Controllers
         [Route("PasswordReset")]
         public IActionResult PasswordReset()
         {
-            return View();
+            return View(new PasswordResetDto());
         }
 
         [HttpPost]
         [Route("PasswordReset")]
         public async Task<IActionResult> PasswordReset(PasswordResetDto passwordResetDto)
         {
-            var user = await accountService.GetUserByEmailAsync(passwordResetDto.Email);
+            if (!ModelState.IsValid)
+                return View(passwordResetDto);
+            try
+            {
+                var user = await accountService.GetUserByEmailAsync(passwordResetDto.Email);
 
-            var resetMessage = await messageService.CreateResetMessageAsync(user, passwordResetDto.ClientUri);
+                var route = Url.Action("PasswordResetConfirm", "Account", null, Request.Scheme);
 
-            await emailService.SendEmailAsync(resetMessage);
+                var resetMessage = await messageService.CreateResetMessageAsync(user, route!);
 
-            return RedirectToAction("Login");
+                await emailService.SendEmailAsync(resetMessage);
+
+            }
+            catch (NotFoundException) { }
+                
+
+            TempData["SnackbarMessage"] = "Password Reset has been sent! Check Your Inbox";
+
+            return View(passwordResetDto);
+        }
+
+        [HttpGet]
+        [Route("PasswordReset/Confirm")]
+        public IActionResult PasswordResetConfirm([FromQuery] string email, [FromQuery] string token)
+        {
+            return View(new PasswordResetConfirmDto { Email = email, Token = token });
         }
 
         [HttpPost]
         [Route("PasswordReset/Confirm")]
         public async Task<IActionResult> PasswordResetConfirm(PasswordResetConfirmDto passwordResetConfirm)
         {
+            if (!ModelState.IsValid)
+                return View(passwordResetConfirm);
+
             await accountService.ResetPasswordAsync(passwordResetConfirm);
 
-            return RedirectToAction("Login");
+            TempData["SnackbarMessage"] = "Password has been reset!";
+
+            return RedirectToAction("Index", "Home");
+
         }
 
         [HttpGet]
