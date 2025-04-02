@@ -1,4 +1,5 @@
-﻿@model BlogApp.Data.Dto.User.UserDto
+﻿@using BlogApp.Data.Dto.User;
+@model BlogApp.Data.Dto.User.UserDto
 
 @{
     ViewData["Title"] = "Profile";
@@ -63,6 +64,8 @@
                         </button>
                     </div>
                 </form>
+
+            @await Html.PartialAsync("_PasswordResetForm", new PasswordResetDto { Email = Model.Email, ConfirmEmail = Model.Email })
             </div>
         </div>
     </div>

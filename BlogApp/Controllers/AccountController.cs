@@ -126,6 +126,9 @@ namespace BlogApp.Controllers
 
             TempData["SnackbarMessage"] = "Password Reset has been sent! Check Your Inbox";
 
+            if (User.Identity?.IsAuthenticated == true)
+                return RedirectToAction("Profile");
+
             return View(passwordResetDto);
         }
 
