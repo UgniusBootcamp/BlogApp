@@ -152,23 +152,35 @@ namespace BlogApp.Controllers
         }
 
         [HttpGet]
-        [Route("Users/{userId}")]
+        [Route("Profile")]
         [Authorize]
-        public async Task<IActionResult> GetUserById(string userId)
+        public async Task<IActionResult> Profile()
         {
-            var user = await accountService.GetUserByIdAsync(userId);
+            string username = User.Identity?.Name!;
 
-            return View("Users",user);
+            var user = await accountService.GetUserByUserNameAsync(username);
+
+            return View("Profile",user);
         }
 
-        [HttpPatch]
-        [Route("Users/{userId}")]
+        [HttpPost]
+        [Route("Profile/Update")]
         [Authorize]
-        public async Task<IActionResult> UpdateUser(string userId, UserUpdateDto userDto)
+        public async Task<IActionResult> UpdateProfile(UserUpdateDto userDto)
         {
-            var user = await accountService.UpdateUserAsync(userId, userDto);
+            if (!ModelState.IsValid)
+            {
+                var currentUser = await accountService.GetUserByUserNameAsync(User.Identity?.Name!);
+                return View("Profile", currentUser);
+            }
 
-            return View("Users", user);
+            string username = User.Identity?.Name!;
+
+            var user = await accountService.UpdateUserAsync(username, userDto);
+
+            TempData["SnackbarMessage"] = "Profile has been updated!";
+
+            return RedirectToAction("Profile");
         }
 
     }

@@ -16,6 +16,7 @@ namespace BlogApp.Data.Helpers.Mapper
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
             CreateMap<RegisterDto, User>();
+            CreateMap<UserUpdateDto, User>();
         }
     }
 }

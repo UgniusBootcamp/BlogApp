@@ -110,9 +110,9 @@ namespace BlogApp.Business.Services
                 throw new Exception(ServiceConstants.InvalidPasswordResetRequest);
         }
 
-        public async Task<UserDto> GetUserByIdAsync(string userId)
+        public async Task<UserDto> GetUserByUserNameAsync(string userName)
         {
-            var user = await accountRepository.FindUserByIdAsync(userId);
+            var user = await accountRepository.FindUserByUsernameAsync(userName);
             if(user == null)
                 throw new NotFoundException(ServiceConstants.UsersNotFound);
 
@@ -122,9 +122,9 @@ namespace BlogApp.Business.Services
             return mapped;
         }
 
-        public async Task<UserDto> UpdateUserAsync(string userId, UserUpdateDto userDto)
+        public async Task<UserDto> UpdateUserAsync(string userName, UserUpdateDto userDto)
         {
-            var user = await accountRepository.FindUserByIdAsync(userId);
+            var user = await accountRepository.FindUserByUsernameAsync(userName);
             if(user == null)
                 throw new NotFoundException(ServiceConstants.UsersNotFound);
 

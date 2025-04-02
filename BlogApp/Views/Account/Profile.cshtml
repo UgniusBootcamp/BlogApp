@@ -1,0 +1,68 @@
+﻿@model BlogApp.Data.Dto.User.UserDto
+
+@{
+    ViewData["Title"] = "Profile";
+    var verified = Model.EmailConfirmed ? "Verified" : "Unverified";
+}
+
+    <div class="max-w-3xl mx-auto">
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="bg-primary-700 px-6 py-8 sm:px-10 sm:py-12">
+                <div class="flex items-center space-x-5">
+                    <div class="flex-shrink-0">
+                        <div class="h-16 w-16 rounded-full bg-indigo-600 flex items-center justify-center text-white text-2xl font-bold">
+                            @Model.Name[0]@Model.Surname[0]
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h1 class="text-2xl font-bold text-white truncate">@Model.Name @Model.Surname</h1>
+                        <p class="text-indigo-200">@Model.UserName</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-600 text-white">
+                            @string.Join(", ", Model.Roles)
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium @(Model.EmailConfirmed ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800")">
+                            @verified
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 py-6 sm:px-10 sm:py-8">
+                <form asp-action="UpdateProfile" asp-controller="Account" method="post" class="space-y-6">
+
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <div class="sm:col-span-3">
+                            <label asp-for="Name" class="block text-sm font-medium text-gray-700"></label>
+                            <div class="mt-1">
+                                <input asp-for="Name" type="text" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
+                            </div>
+                        <span asp-validation-for="Name" class="text-sm text-red-600 mt-1"></span>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label asp-for="Surname" class="block text-sm font-medium text-gray-700"></label>
+                            <div class="mt-1">
+                                <input asp-for="Surname" type="text" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
+                            </div>
+                        <span asp-validation-for="Surname" class="text-sm text-red-600 mt-1"></span>
+                        </div>
+
+                        <div class="sm:col-span-4">
+                            <label asp-for="Email" class="block text-sm font-medium text-gray-700"></label>
+                            <div class="mt-1">
+                                <input asp-for="Email" type="email" readonly class="block w-full rounded-md bg-gray-100 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-6">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                            Update profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

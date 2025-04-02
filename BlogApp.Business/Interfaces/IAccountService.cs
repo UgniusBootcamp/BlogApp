@@ -44,19 +44,19 @@ namespace BlogApp.Business.Interfaces
         public Task ResetPasswordAsync(PasswordResetConfirmDto passwordResetConfirm);
 
         /// <summary>
-        /// Method to get user by id
+        /// Method to get user by username
         /// </summary>
-        /// <param name="userId">user id</param>
+        /// <param name="username">username</param>
         /// <returns>user dto</returns>
-        public Task<UserDto> GetUserByIdAsync(string userId);
+        public Task<UserDto> GetUserByUserNameAsync(string username);
 
         /// <summary>
         /// Method to update user
         /// </summary>
-        /// <param name="userId">user id</param>
+        /// <param name="username">username</param>
         /// <param name="userDto">update dto</param>
         /// <returns>updated user</returns>
-        public Task<UserDto> UpdateUserAsync(string userId, UserUpdateDto userDto);
+        public Task<UserDto> UpdateUserAsync(string username, UserUpdateDto userDto);
 
         /// <summary>
         /// Method for logging out
