@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "404";
+    var statusCode = "404";
+    var pageTitle = "Page Not Found";
+    var message = "The page you are looking for does not exist.";
+    var goHomeText = "Go to Home";
+}
+
+<div class="flex flex-col items-center justify-center min-h-screen text-center px-4">
+    <h1 class="text-9xl font-extrabold text-primary-800 animate-bounce">
+        @statusCode
+    </h1>
+    <h2 class="text-2xl text-primary-700 mt-4">
+        @pageTitle
+    </h2>
+    <p class="mt-2 font-semibold text-primary-500">
+        @message
+    </p>
+    <a asp-action="Index" asp-controller="Home"
+       class="mt-6 inline-block bg-primary-700 text-white px-4 py-2 rounded hover:bg-primary-400 transition duration-300">
+        @goHomeText
+    </a>
+</div>
