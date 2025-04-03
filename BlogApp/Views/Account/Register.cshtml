@@ -1,8 +1,25 @@
 ﻿@model BlogApp.Data.Dto.User.RegisterDto
 
+@{
+    var title = "Register for BlogApp";
+    ViewData["Title"] = title;
+    var createAccount = "Create Account";
+    var alreadyHaveAccount = "Already have an account?";
+    var signIn = "Sign in";
+    var passwordRequirements = "Password requirements:";
+    var passwordRequirementsList = new List<string>
+    {
+        "At least 8 characters long",
+        "At least one uppercase letter (A-Z)",
+        "At least one lowercase letter (a-z)",
+        "At least one number (0-9)",
+        "At least one special character"
+    };
+}
+
 
 <div class="max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg mt-10">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Register for BlogApp</h1>
+    <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">@title</h1>
 
     <form asp-action="Register" asp-controller="Account" method="post" class="space-y-5">
         @Html.AntiForgeryToken()
@@ -39,13 +56,12 @@
                    placeholder="Create a password" />
             <span asp-validation-for="Password" class="text-sm text-red-600 mt-1"></span>
             <div class="mt-2 p-3 bg-gray-50 rounded-md text-xs text-gray-600">
-                <p class="font-medium mb-1">Password requirements:</p>
+                <p class="font-medium mb-1">@passwordRequirements</p>
                 <ul class="list-disc list-inside space-y-1">
-                    <li>At least 8 characters long</li>
-                    <li>At least one uppercase letter (A-Z)</li>
-                    <li>At least one lowercase letter (a-z)</li>
-                    <li>At least one number (0-9)</li>
-                    <li>At least one special character </li>
+                    @foreach (var requirement in passwordRequirementsList)
+                    {
+                        <li>@requirement</li>
+                    }
                 </ul>
             </div>
         </div>
@@ -62,14 +78,14 @@
         <div class="pt-2">
             <button type="submit"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors hover:cursor-pointer">
-                Create Account
+                @createAccount
             </button>
         </div>
 
         <div class="text-center text-sm text-gray-600">
-            Already have an account?
+            @alreadyHaveAccount
             <a asp-action="Login" asp-controller="Account" class="text-blue-600 hover:text-blue-800 font-medium">
-                Sign in
+                @signIn
             </a>
         </div>
     </form>
