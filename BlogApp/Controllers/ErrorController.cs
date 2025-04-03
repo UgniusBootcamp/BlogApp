@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BlogApp.Data.Constants;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BlogApp.Controllers
 {
@@ -6,19 +7,19 @@ namespace BlogApp.Controllers
     public class ErrorController : Controller
     {
 
-        [HttpGet("NotFound")]
+        [HttpGet(ControllerConstants.NotFound)]
         public IActionResult NotFoundError()
         {
             return View();
         }
 
-        [HttpGet("ServerError")]
+        [HttpGet(ControllerConstants.ServerError)]
         public IActionResult ServerError()
         {
             return View();
         }
 
-        [HttpGet("AccessDenied")]
+        [HttpGet(ControllerConstants.AccessDenied)]
         public IActionResult AccessDenied()
         {
             return View();

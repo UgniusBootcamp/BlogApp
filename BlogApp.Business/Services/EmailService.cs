@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using BlogApp.Business.Interfaces;
+using BlogApp.Data.Constants;
 using BlogApp.Data.Entities;
 using BlogApp.Data.Helpers.Email;
 using BlogApp.Data.Helpers.Settings;
@@ -16,6 +17,10 @@ namespace BlogApp.Business.Services
     {
         private readonly EmailConfiguration _emailConfig = emailConfig.Value;
 
+        /// <summary>
+        /// Method to send email
+        /// </summary>
+        /// <param name="message">message</param>
         public async Task SendEmailAsync(Message message)
         {
             var emailMessage = CreateEmailMessage(message);
@@ -23,6 +28,11 @@ namespace BlogApp.Business.Services
             await SendAsync(emailMessage);
         }
 
+        /// <summary>
+        /// Method for email creation
+        /// </summary>
+        /// <param name="message">message</param>
+        /// <returns>message</returns>
         private MimeMessage CreateEmailMessage(Message message)
         {
             var emailMessage = new MimeMessage();
@@ -31,20 +41,16 @@ namespace BlogApp.Business.Services
             emailMessage.Subject = message.Subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = String.Format(@"
-                <html>
-                    <body style='font-family:Arial, sans-serif; color:#444;'>
-                        {0}
-                        <p style='font-size:16px;'>Thanks for using our blog app system!</p>
-                    </body>
-                </html>", message.Content)
+                Text = String.Format(ServiceConstants.MessageBody, message.Content)
             };
 
             return emailMessage;
         }
 
-
-
+        /// <summary>
+        /// Method to send email
+        /// </summary>
+        /// <param name="message">message</param>
         private async Task SendAsync(MimeMessage message) 
         {
             using (var client = new SmtpClient())

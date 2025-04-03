@@ -1,7 +1,15 @@
 ﻿@model BlogApp.Data.Dto.User.LoginDto
+@{
+    var title = "Login";
+    ViewData["Title"] = title;
+    var login = "Log in";
+    var registerNow = "Register Now";
+    var reset = "Reset";
+    var forgotPassword = "Forgot Password?";
+}
 
 <div class="max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg mt-10 ">
-    <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login</h1>
+    <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">@title</h1>
 
     <form asp-action="Login" asp-controller="Account" method="post" class="space-y-5">
         @Html.AntiForgeryToken()
@@ -26,20 +34,20 @@
         <div class="pt-2">
             <button type="submit"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors hover:cursor-pointer">
-                Log in
+                @login 
             </button>
         </div>
 
         <div class="text-center text-sm text-gray-600">
             New to the Blog App?
             <a asp-action="Register" asp-controller="Account" class="text-blue-600 hover:text-blue-800 font-medium">
-                Register Now
+                @registerNow
             </a>
         </div>
         <div class="text-center text-sm text-gray-600">
-            Forgot Password?
+            @forgotPassword
             <a asp-action="PasswordReset" asp-controller="Account" class="text-blue-600 hover:text-blue-800 font-medium">
-                Reset
+                @reset
             </a>
         </div>
 

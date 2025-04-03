@@ -1,15 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BlogApp.Data.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlogApp.Data.Dto.User
 {
     public class UserUpdateDto
     {
-        [Required(ErrorMessage = "First name is required")]
-        [StringLength(50, ErrorMessage = "Name cannot exceed 50 characters")]
+        [Required(ErrorMessage = DisplayConstants.pleaseEnterYourFirstName)]
+        [StringLength(50, ErrorMessage = DisplayConstants.firstNameCannotExceed50Characters)]
         public string Name { get; set; } = null!;
 
-        [Required(ErrorMessage = "Last name is required")]
-        [StringLength(50, ErrorMessage = "Surname cannot exceed 50 characters")]
+        [Required(ErrorMessage = DisplayConstants.pleaseEnterYourLastName)]
+        [StringLength(50, ErrorMessage = DisplayConstants.lastNameCannotExceed50Characters)]
         public string Surname { get; set; } = null!;
     }
 }

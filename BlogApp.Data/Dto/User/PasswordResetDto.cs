@@ -1,19 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BlogApp.Data.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlogApp.Data.Dto.User
 {
     public class PasswordResetDto
     {
-        [Required(ErrorMessage ="Password is required")]
-        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
+        [Required(ErrorMessage = DisplayConstants.emailAddressIsRequired)]
+        [EmailAddress(ErrorMessage = DisplayConstants.pleaseEnterAValidEmailAddress)]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email Address")]
+        [Display(Name = DisplayConstants.emailAddress)]
         public string Email { get; set; } = null!;
 
-        [Required(ErrorMessage = "Please confirm your email adress")]
+        [Required(ErrorMessage = DisplayConstants.pleaseConfirmYourEmailAddress)]
         [DataType(DataType.EmailAddress)]
-        [Compare("Email", ErrorMessage = "Email addresses do not match")]
-        [Display(Name = "Confirm Email")]
+        [Compare(DisplayConstants.email, ErrorMessage = DisplayConstants.emailAddressesDoNotMatch)]
+        [Display(Name = DisplayConstants.confirmEmail)]
         public string ConfirmEmail { get; set; } = null!;
     }
 }

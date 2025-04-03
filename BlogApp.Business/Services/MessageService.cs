@@ -17,14 +17,14 @@ namespace BlogApp.Business.Services
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             var param = new Dictionary<string, string?>
             {
-                {"token", token },
-                {"email", user.Email }
+                {ServiceConstants.Token, token },
+                {ServiceConstants.Email, user.Email }
             };
 
             var callback = QueryHelpers.AddQueryString(uri, param);
-            string body = CallbackButtonHtml(callback, "Confirm Email");
+            string body = CallbackButtonHtml(callback, ServiceConstants.ConfirmEmail);
 
-            var message = new Message([user.Email!], "Email Confirmation", body);
+            var message = new Message([user.Email!], ServiceConstants.EmailConfirmation, body);
 
             return message;
         }
@@ -34,29 +34,20 @@ namespace BlogApp.Business.Services
             var token = await userManager.GeneratePasswordResetTokenAsync(user);
             var param = new Dictionary<string, string?>
             {
-                {"token", token },
-                {"email", user.Email }
+                {ServiceConstants.Token, token },
+                {ServiceConstants.Email, user.Email }
             };
 
             var callback = QueryHelpers.AddQueryString(uri, param);
-            string body = CallbackButtonHtml(callback, "Reset Password");
+            string body = CallbackButtonHtml(callback, ServiceConstants.ResetPassword);
 
-            var message = new Message([user.Email!], "Password Reset", body);
+            var message = new Message([user.Email!], ServiceConstants.PasswordReset, body);
             return message;
         }
 
         private string CallbackButtonHtml(string callback, string name)
         {
-            return $@"
-                <a href='{callback}' style='
-                    display:inline-block;
-                    padding:10px 20px;
-                    font-size:16px;
-                    color:#fff;
-                    background-color:#007bff;
-                    text-decoration:none;
-                    border-radius:5px;
-                '>{name}</a>";
+            return String.Format(ServiceConstants.Button, callback, name);
         }
     }
 }

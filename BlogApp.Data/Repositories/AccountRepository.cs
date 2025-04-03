@@ -117,21 +117,41 @@ namespace BlogApp.Data.Repositories
             return false;
         }
 
+        /// <summary>
+        /// Find user by email
+        /// </summary>
+        /// <param name="email">email</param>
+        /// <returns>user</returns>
         public async Task<User?> FindUserByEmailAsync(string email)
         {
             return await userManager.FindByEmailAsync(email);
         }
 
+        /// <summary>
+        /// Check if email is confirmed
+        /// </summary>
+        /// <param name="user">user</param>
+        /// <returns>true if confirmed, false if not</returns>
         public async Task<bool> IsEmailConfirmedAsync(User user)
         {
             return await userManager.IsEmailConfirmedAsync(user);
         }
 
+        /// <summary>
+        /// Method to update user
+        /// </summary>
+        /// <param name="user">user to update</param>
+        /// <returns>true if updated</returns>
         public async Task<bool> UpdateUserAsync(User user)
         {
             return (await userManager.UpdateAsync(user)).Succeeded;
         }
 
+        /// <summary>
+        /// Method to get similar usernames
+        /// </summary>
+        /// <param name="userName">usernamen</param>
+        /// <returns>similar usernames</returns>
         public async Task<List<string?>> FindSimilarUsernamesAsync(string userName)
         {
             return await context.Users

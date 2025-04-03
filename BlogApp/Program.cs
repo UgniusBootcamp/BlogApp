@@ -1,5 +1,6 @@
 using BlogApp.Business.Interfaces;
 using BlogApp.Business.Services;
+using BlogApp.Data.Constants;
 using BlogApp.Data.Data;
 using BlogApp.Data.Entities;
 using BlogApp.Data.Helpers.Mapper;
@@ -63,10 +64,10 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Account/Login";
-    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.LoginPath = ControllerConstants.LoginEndpoint;
+    options.AccessDeniedPath = ControllerConstants.AccessDeniedEndpoint;
     options.ExpireTimeSpan = TimeSpan.FromDays(1);
-    options.Cookie.Name = "AppAuth";
+    options.Cookie.Name = ControllerConstants.AppAuth;
 });
 
 //Add Auth

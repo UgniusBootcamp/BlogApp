@@ -1,4 +1,5 @@
 ﻿using BlogApp.Business.Interfaces;
+using BlogApp.Data.Constants;
 using BlogApp.Data.Dto.User;
 using BlogApp.Data.Helpers.Exceptions;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ namespace BlogApp.Controllers
     [Route("[controller]")]
     public class AccountController(IAccountService accountService, IEmailService emailService, IMessageService messageService) : Controller
     {
-        [HttpPost("Login")]
+        [HttpPost(ControllerConstants.Login)]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             if (!ModelState.IsValid)
@@ -21,34 +22,34 @@ namespace BlogApp.Controllers
             }
             catch (UnauthorizedException ex)
             {
-                ModelState.AddModelError("Password", ex.Message);
+                ModelState.AddModelError(ControllerConstants.Password, ex.Message);
                 return View(loginDto);
             }
-            TempData["SnackbarMessage"] = "Log in Successful!";
+            TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.LogInSuccessful;
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(ControllerConstants.Index, ControllerConstants.Home);
         }
 
-        [HttpGet("Login")]
+        [HttpGet(ControllerConstants.Login)]
         public IActionResult Login()
         {
             if(User.Identity?.IsAuthenticated == true)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(ControllerConstants.Index, ControllerConstants.Home);
 
             return View(new LoginDto());
         }
 
-        [HttpPost("Logout")]
+        [HttpPost(ControllerConstants.Logout)]
         public async Task<IActionResult> Logout()
         {
             await accountService.LogOutAsync();
 
-            TempData["SnackbarMessage"] = "Log out Successful!";
+            TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.LogOutSuccessful;
 
-            return RedirectToAction("Login");
+            return RedirectToAction(ControllerConstants.Login);
         }
 
-        [HttpPost("Register")]
+        [HttpPost(ControllerConstants.Register)]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             if(!ModelState.IsValid)
@@ -60,36 +61,36 @@ namespace BlogApp.Controllers
 
                 if(user != null)
                 {
-                    var route = Url.Action("EmailConfirmation", "Account", null, Request.Scheme);
+                    var route = Url.Action(ControllerConstants.EmailConfirmation, ControllerConstants.Account, null, Request.Scheme);
 
                     var confirmationMessage = await messageService.CreateConfirmationMessageAsync(user, route!);
 
                     await emailService.SendEmailAsync(confirmationMessage);
 
-                    TempData["SnackbarMessage"] = "Confirmation Email has been sent. Chech Your Inbox.";
+                    TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.ConfirmationEmailSent;
 
-                    return RedirectToAction("Login");
+                    return RedirectToAction(ControllerConstants.Login);
                 }
             }
             catch (UnauthorizedException ex)
             {
-                ModelState.AddModelError("Email", ex.Message);
+                ModelState.AddModelError(ControllerConstants.Email, ex.Message);
                 return View(registerDto);
             }
 
             return View(registerDto);
         }
 
-        [HttpGet("Register")]
+        [HttpGet(ControllerConstants.Register)]
         public IActionResult Register()
         {
             if (User.Identity?.IsAuthenticated == true)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(ControllerConstants.Index, ControllerConstants.Home);
 
             return View(new RegisterDto());
         }
 
-        [HttpGet("EmailConfirmation")]
+        [HttpGet(ControllerConstants.EmailConfirmation)]
         public async Task<IActionResult> EmailConfirmation([FromQuery] string email, [FromQuery] string token)
         {
             await accountService.ConfirmEmailAsync(email, token);
@@ -98,14 +99,14 @@ namespace BlogApp.Controllers
         }
 
         [HttpGet]
-        [Route("PasswordReset")]
+        [Route(ControllerConstants.PasswordReset)]
         public IActionResult PasswordReset()
         {
             return View(new PasswordResetDto());
         }
 
         [HttpPost]
-        [Route("PasswordReset")]
+        [Route(ControllerConstants.PasswordReset)]
         public async Task<IActionResult> PasswordReset(PasswordResetDto passwordResetDto)
         {
             if (!ModelState.IsValid)
@@ -114,7 +115,7 @@ namespace BlogApp.Controllers
             {
                 var user = await accountService.GetUserByEmailAsync(passwordResetDto.Email);
 
-                var route = Url.Action("PasswordResetConfirm", "Account", null, Request.Scheme);
+                var route = Url.Action(ControllerConstants.PasswordResetConfirm, ControllerConstants.Account, null, Request.Scheme);
 
                 var resetMessage = await messageService.CreateResetMessageAsync(user, route!);
 
@@ -124,23 +125,23 @@ namespace BlogApp.Controllers
             catch (NotFoundException) { }
                 
 
-            TempData["SnackbarMessage"] = "Password Reset has been sent! Check Your Inbox";
+            TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.PasswordResetConfirmMessage;
 
             if (User.Identity?.IsAuthenticated == true)
-                return RedirectToAction("Profile");
+                return RedirectToAction(ControllerConstants.Profile);
 
             return View(passwordResetDto);
         }
 
         [HttpGet]
-        [Route("PasswordReset/Confirm")]
+        [Route(ControllerConstants.PasswordResetConfirmEndpoint)]
         public IActionResult PasswordResetConfirm([FromQuery] string email, [FromQuery] string token)
         {
             return View(new PasswordResetConfirmDto { Email = email, Token = token });
         }
 
         [HttpPost]
-        [Route("PasswordReset/Confirm")]
+        [Route(ControllerConstants.PasswordResetConfirmEndpoint)]
         public async Task<IActionResult> PasswordResetConfirm(PasswordResetConfirmDto passwordResetConfirm)
         {
             if (!ModelState.IsValid)
@@ -148,14 +149,14 @@ namespace BlogApp.Controllers
 
             await accountService.ResetPasswordAsync(passwordResetConfirm);
 
-            TempData["SnackbarMessage"] = "Password has been reset!";
+            TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.PasswordHasBeenReset;
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(ControllerConstants.Index, ControllerConstants.Home);
 
         }
 
         [HttpGet]
-        [Route("Profile")]
+        [Route(ControllerConstants.Profile)]
         [Authorize]
         public async Task<IActionResult> Profile()
         {
@@ -163,27 +164,27 @@ namespace BlogApp.Controllers
 
             var user = await accountService.GetUserByUserNameAsync(username);
 
-            return View("Profile",user);
+            return View(ControllerConstants.Profile,user);
         }
 
         [HttpPost]
-        [Route("Profile/Update")]
+        [Route(ControllerConstants.ProfileUpdate)]
         [Authorize]
         public async Task<IActionResult> UpdateProfile(UserUpdateDto userDto)
         {
             if (!ModelState.IsValid)
             {
                 var currentUser = await accountService.GetUserByUserNameAsync(User.Identity?.Name!);
-                return View("Profile", currentUser);
+                return View(ControllerConstants.Profile, currentUser);
             }
 
             string username = User.Identity?.Name!;
 
             var user = await accountService.UpdateUserAsync(username, userDto);
 
-            TempData["SnackbarMessage"] = "Profile has been updated!";
+            TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.ProfileHasBeenUpdated;
 
-            return RedirectToAction("Profile");
+            return RedirectToAction(ControllerConstants.Profile);
         }
 
     }

@@ -89,6 +89,12 @@ namespace BlogApp.Business.Services
                 throw new Exception(ServiceConstants.InvalidEmailConfrimationRequest);
         }
 
+        /// <summary>
+        /// Method to get user by email
+        /// </summary>
+        /// <param name="email">email</param>
+        /// <returns>user</returns>
+        /// <exception cref="NotFoundException">if user with email does not exist</exception>
         public async Task<User> GetUserByEmailAsync(string email)
         {
             var user = await accountRepository.FindUserByEmailAsync(email);
@@ -98,6 +104,12 @@ namespace BlogApp.Business.Services
             return user;
         }
 
+        /// <summary>
+        /// Method to reset password
+        /// </summary>
+        /// <param name="passwordResetConfirm">password reset dto</param>
+        /// <exception cref="NotFoundException">if user is not found</exception>
+        /// <exception cref="Exception">if operation does not succeed</exception>
         public async Task ResetPasswordAsync(PasswordResetConfirmDto passwordResetConfirm)
         {
             var user = await accountRepository.FindUserByEmailAsync(passwordResetConfirm.Email);
@@ -110,6 +122,11 @@ namespace BlogApp.Business.Services
                 throw new Exception(ServiceConstants.InvalidPasswordResetRequest);
         }
 
+        /// <summary>
+        /// Method to get user by username
+        /// </summary>
+        /// <param name="userName">username</param>
+        /// <exception cref="NotFoundException">user was not found</exception>
         public async Task<UserDto> GetUserByUserNameAsync(string userName)
         {
             var user = await accountRepository.FindUserByUsernameAsync(userName);
@@ -122,6 +139,13 @@ namespace BlogApp.Business.Services
             return mapped;
         }
 
+        /// <summary>
+        /// Method to update user
+        /// </summary>
+        /// <param name="userName">username</param>
+        /// <param name="userDto">user update dto</param>
+        /// <exception cref="NotFoundException">user not found</exception>
+        /// <exception cref="Exception">operation fail</exception>
         public async Task<UserDto> UpdateUserAsync(string userName, UserUpdateDto userDto)
         {
             var user = await accountRepository.FindUserByUsernameAsync(userName);
@@ -141,6 +165,12 @@ namespace BlogApp.Business.Services
             return dto;
         }
 
+        /// <summary>
+        /// Method to generate unique username
+        /// </summary>
+        /// <param name="name">name</param>
+        /// <param name="surname">surname</param>
+        /// <returns>unique username</returns>
         private async Task<string> GenerateUsername(string name, string surname)
         {
             var baseUsername = name.ToLower().Substring(0, Math.Min(3, name.Length)) +
@@ -169,6 +199,9 @@ namespace BlogApp.Business.Services
             return existingUsernames.Contains(baseUsername) ? baseUsername + number : baseUsername;
         }
 
+        /// <summary>
+        /// Method for logging out
+        /// </summary>
         public async Task LogOutAsync()
         {
             await signInManager.SignOutAsync();

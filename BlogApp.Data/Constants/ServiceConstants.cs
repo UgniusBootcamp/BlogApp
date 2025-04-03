@@ -13,5 +13,18 @@
         public const string SingInFailed = "Sign in failed";
         public const string SignInFailedMessage = "Sign in failed. Please check your credentials and try again.";
         public const string ArgumentsCannotBeNull = "Arguments cannot be null";
+        public const string MessageBody = "<html>" +
+            "<body style='font-family:Arial, sans-serif; color:#444;'>" +
+            "{0}" +
+            " <p style='font-size:16px;'>Thanks for using our blog app system!</p>" +
+            "</body>" +
+            "</html>";
+        public const string Token ="token";
+        public const string Email = "email";
+        public const string EmailConfirmation = "Email Confirmation";
+        public const string ConfirmEmail = "Confirm Email";
+        public const string PasswordReset = "Password Reset";
+        public const string ResetPassword = "Reset Password";
+        public const string Button = "<a href='{0}' style='display:inline-block;padding:10px 20px;font-size:16px;color:#fff;background-color:#007bff;text-decoration:none;border-radius:5px;'>{1}</a>";
     }
 }

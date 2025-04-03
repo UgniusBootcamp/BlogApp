@@ -1,4 +1,5 @@
-﻿using BlogApp.Data.Helpers.Exceptions;
+﻿using BlogApp.Data.Constants;
+using BlogApp.Data.Helpers.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace BlogApp.Infrastructure
@@ -11,13 +12,13 @@ namespace BlogApp.Infrastructure
             switch (exception)
             {
                 case NotFoundException:
-                    httpContext.Response.Redirect("/Error/NotFound");
+                    httpContext.Response.Redirect(ControllerConstants.NotFoundEndpoint);
                     break;
                 case UnauthorizedException:
-                    httpContext.Response.Redirect("/Error/AccessDenied");
+                    httpContext.Response.Redirect(ControllerConstants.AccessDeniedEndpoint);
                     break;
                 default:
-                    httpContext.Response.Redirect("/Error/ServerError");
+                    httpContext.Response.Redirect(ControllerConstants.ServerErrorEndpoint);
                     break;
             }
 
