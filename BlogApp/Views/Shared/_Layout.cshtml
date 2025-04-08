@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - BlogApp</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <header class="bg-primary-700 shadow">
@@ -39,11 +40,42 @@
                        asp-action="Index">
                         Home
                     </a>
+                    @if (!User.Identity?.IsAuthenticated ?? true)
+                    {
+                        <div class="hidden space-x-6 sm:flex">
+                            <a class="text-white transition-colors duration-300 hover:text-indigo-600"
+                               asp-controller="Account"
+                               asp-action="Login">
+                                Login
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="hidden space-x-6 sm:flex">
+                            <a asp-controller="Account"
+                               asp-action="Profile"
+                               class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
+                                Profile
+                            </a>
+                        </div>
+                        <div class="hidden space-x-6 sm:flex">
+                            <form method="post"
+                                  asp-controller="Account"
+                                  asp-action="Logout">
+                                <button type="submit"
+                                        class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
+                                    Log out
+                                </button>
+                            </form>
+                        </div>
+                    }
                 </div>
+               
             </div>
         </nav>
         <div id="mobile-menu" class="hidden sm:hidden">
-            <div class="space-y-1 bg-white px-2 pt-2 pb-3 shadow">
+            <div class="space-y-1 bg-primary-700 px-2 pt-2 pb-3 shadow">
                 <a class="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-indigo-50"
                    asp-area=""
                    asp-controller="Home"
@@ -53,9 +85,10 @@
             </div>
         </div>
     </header>
-    <div class="min-h-screen bg-primary-300">
+    <div class="min-h-screen bg-radial-[at_25%_25%] from-primary-200 to-primary-500">
         <main role="main" class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             @RenderBody()
+            @await Html.PartialAsync("_SnackBar", TempData["SnackbarMessage"] as string)
         </main>
     </div>
 

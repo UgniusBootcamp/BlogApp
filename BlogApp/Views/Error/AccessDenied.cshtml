@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Access Denied";
+    var noAccess = "You don't have access";
+    var message = "Sorry, you’re not allowed to view this page.";
+    var goHomeText = "Go to Home";
+}
+
+<div class="flex flex-col items-center justify-center min-h-screen text-center px-4">
+    <div>
+        <i class="fas fa-skull-crossbones text-6xl text-primary-800 animate-bounce"></i>
+    </div>
+    <h1 class="text-4xl font-bold text-primary-800 mt-4">
+        @noAccess
+    </h1>
+    <p class="mt-4 text-primary-500 text-center max-w-md font-semibold">
+        @message
+    </p>
+    <a asp-action="Index" asp-controller="Home"
+       class="bg-primary-700 mt-6 text-white px-4 py-2 rounded hover:bg-primary-400 transition duration-300">
+        @goHomeText
+    </a>
+</div>
