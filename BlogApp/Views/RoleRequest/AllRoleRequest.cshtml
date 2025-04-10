@@ -1,1 +1,24 @@
-﻿@model IEnumerable<BlogApp.Data.Dto.RoleRequest.RoleRequestListDto>
+﻿@model BlogApp.Models.RoleRequest.AllRoleRequestsViewModel
+
+@{
+    var title = "All Role Requests";
+    ViewData["Title"] = title;
+    var roleRequestList = Model.roleRequests.Items;
+}
+
+<div class="container mx-auto p-6 bg-primary-500/50 rounded-lg ">
+    <header class="mb-8">
+        <div class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-800 tracking-tight relative inline-block">
+                @title
+                <span class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></span>
+            </h1>
+        </div>
+    </header>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        @foreach(var rr in roleRequestList)
+        {
+            @await Html.PartialAsync("_RoleRequestCard", rr)
+        }
+    </div>
+</div>

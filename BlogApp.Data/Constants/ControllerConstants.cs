@@ -15,7 +15,8 @@ namespace BlogApp.Data.Constants
         public const string Home = "Home";
         public const string Index = "Index";
         public const string UserRoleRequest = "UserRoleRequest";
-        public const string ConfirmRoleRequest = $"{UserRoleRequest}/Confirm";
+        public const string RoleRequest = "RoleRequest";
+        public const string ConfirmRoleRequest = $"ConfirmRoleRequest";
         public const string AllRoleRequest = "AllRoleRequest";
         public const string DeleteRoleRequest = "DeleteRoleRequest";
         public const string CreateRoleRequest = "CreateRoleRequest";
@@ -44,5 +45,6 @@ namespace BlogApp.Data.Constants
         public const string RoleRequestApproved = "Role request has been approved";
         public const string RoleRequestDeleted = "Role request has been deleted";
         public const string _RoleRequestCreateModal = "_RoleRequestCreateModal";
+        public const string UpdateProfile = "UpdateProfile";
     }
 }

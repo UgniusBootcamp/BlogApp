@@ -1,6 +1,5 @@
 ﻿using BlogApp.Business.Interfaces;
 using BlogApp.Data.Constants;
-using BlogApp.Data.Dto.RoleRequest;
 using BlogApp.Data.Helpers.Roles;
 using BlogApp.Models.RoleRequest;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +16,9 @@ namespace BlogApp.Controllers
         [Authorize]
         public async Task<IActionResult> UserRoleRequest()
         {
+            if(User.IsInRole(UserRoles.Admin))
+                return RedirectToAction(ControllerConstants.AllRoleRequest, ControllerConstants.RoleRequest);
+
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!;
             
             var roleRequests = await roleRequestService.GetUserRoleRequestsAsync(userId);

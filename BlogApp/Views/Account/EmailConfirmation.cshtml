@@ -1,4 +1,6 @@
-﻿@{
+﻿@using BlogApp.Data.Constants
+
+@{
     ViewBag.Title = "Email Confirmed";
     var pageTitle = "Email Successfully Confirmed!";
     var message = "Your email address has been verified. You can now log in to your account.";
@@ -13,7 +15,7 @@
     <p class="mt-2 font-semibold text-primary-500">
         @message
     </p>
-    <a asp-action="Login" asp-controller="Account"
+    <a asp-action=@ControllerConstants.Login asp-controller=@ControllerConstants.Account
        class="mt-6 inline-block bg-primary-700 text-white px-4 py-2 rounded hover:bg-primary-400 transition duration-300">
         @goHomeText
     </a>
