@@ -85,6 +85,7 @@
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
+    --color-primary-100: #dce3ed;
     --color-primary-200: #bac6d7;
     --color-primary-300: #94a1bb;
     --color-primary-400: #6f7c9f;
@@ -237,6 +238,9 @@
   }
 }
 @layer utilities {
+  .pointer-events-none {
+    pointer-events: none;
+  }
   .collapse {
     visibility: collapse;
   }
@@ -473,6 +477,9 @@
   }
   .my-5 {
     margin-block: calc(var(--spacing) * 5);
+  }
+  .my-6 {
+    margin-block: calc(var(--spacing) * 6);
   }
   .my-auto {
     margin-block: auto;
@@ -957,6 +964,9 @@
     --tw-border-style: none;
     border-style: none;
   }
+  .border-blue-500 {
+    border-color: var(--color-blue-500);
+  }
   .border-gray-100 {
     border-color: var(--color-gray-100);
   }
@@ -965,6 +975,12 @@
   }
   .border-gray-300 {
     border-color: var(--color-gray-300);
+  }
+  .border-primary-300 {
+    border-color: var(--color-primary-300);
+  }
+  .border-primary-500 {
+    border-color: var(--color-primary-500);
   }
   .border-primary-700 {
     border-color: var(--color-primary-700);
@@ -1025,6 +1041,9 @@
   }
   .bg-primary-500\/50 {
     background-color: color-mix(in oklab, var(--color-primary-500) 50%, transparent);
+  }
+  .bg-primary-600 {
+    background-color: var(--color-primary-600);
   }
   .bg-primary-700 {
     background-color: var(--color-primary-700);
@@ -1514,10 +1533,28 @@
     --tw-ease: var(--ease-out);
     transition-timing-function: var(--ease-out);
   }
+  .select-none {
+    -webkit-user-select: none;
+    user-select: none;
+  }
   .hover\:cursor-pointer {
     &:hover {
       @media (hover: hover) {
         cursor: pointer;
+      }
+    }
+  }
+  .hover\:bg-blue-100 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-blue-100);
+      }
+    }
+  }
+  .hover\:bg-blue-500 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-blue-500);
       }
     }
   }
@@ -1570,10 +1607,24 @@
       }
     }
   }
+  .hover\:bg-primary-100 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-primary-100);
+      }
+    }
+  }
   .hover\:bg-primary-400 {
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-primary-400);
+      }
+    }
+  }
+  .hover\:bg-primary-500 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-primary-500);
       }
     }
   }

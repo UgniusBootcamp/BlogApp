@@ -1,0 +1,82 @@
+﻿@model dynamic
+
+@functions {
+    List<object> GetPageNumbers(int current, int total, int delta = 2)
+    {
+        var pages = new List<int>();
+        var rangeWithDots = new List<object>();
+
+        for (int i = 1; i <= total; i++)
+        {
+            if (i == 1 || i == total || (i >= current - delta && i <= current + delta))
+            {
+                pages.Add(i);
+            }
+        }
+
+        int? prevPage = null;
+        foreach (var page in pages)
+        {
+            if (prevPage.HasValue)
+            {
+                if (page - prevPage == 2)
+                {
+                    rangeWithDots.Add(prevPage.Value + 1);
+                }
+                else if (page - prevPage > 2)
+                {
+                    rangeWithDots.Add("...");
+                }
+            }
+            rangeWithDots.Add(page);
+            prevPage = page;
+        }
+
+        return rangeWithDots;
+    }
+
+    string GetPageLink(int page)
+    {
+        var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString("",
+            ((Dictionary<string, string>)ViewData["RouteParams"] ?? new()).Concat(
+                new[] { new KeyValuePair<string, string>("pageIndex", page.ToString()) }));
+        return query;
+    }
+}
+
+@if (Model.TotalPages > 0)
+{
+    var pageIndex = Model.PageIndex;
+    var pageNumbers = GetPageNumbers(pageIndex, Model.TotalPages);
+
+    <div class="flex items-center justify-center space-x-2 my-6">
+        <a href="@GetPageLink(pageIndex - 1)"
+           class="px-4 py-2 bg-primary-300 rounded-full text-xs transition-colors duration-300 @(Model.HasPreviousPage ? "hover:bg-primary-100" : " pointer-events-none bg-primary-600 text-white")">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+
+        @foreach (var page in pageNumbers)
+        {
+            if (page is int p)
+            {
+                <a href="@GetPageLink(p)"
+                   class="px-4 py-2 border rounded-full text-sm transition-colors duration-300 @(p == pageIndex ? "bg-primary-600 text-white border-primary-500 hover:bg-primary-500" : "border-primary-300 bg-primary-300 hover:bg-primary-100")">
+                    @p
+                </a>
+            }
+            else
+            {
+                <span class="px-3 py-2 text-gray-500 select-none">…</span>
+            }
+        }
+
+        <a href="@GetPageLink(pageIndex + 1)"
+           class="px-4 py-2 bg-primary-300 rounded-full text-xs transition-colors duration-300 @(Model.HasNextPage ? "hover:bg-primary-100" : " pointer-events-none bg-primary-600 text-white")">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </a>
+    </div>
+}

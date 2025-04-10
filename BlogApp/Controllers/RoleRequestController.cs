@@ -55,7 +55,7 @@ namespace BlogApp.Controllers
 
         [HttpGet(ControllerConstants.AllRoleRequest)]
         [Authorize(Roles = UserRoles.Admin)]
-        public async Task<IActionResult> AllRoleRequest(string? roleId, string? query, int pageIndex = 1, int pageSize = 10)
+        public async Task<IActionResult> AllRoleRequest(string? roleId, string? query, int pageIndex = 1, int pageSize = 1)
         {
             var roleRequests = await roleRequestService.GetAllRoleRequestsAsync(roleId, query, pageIndex, pageSize);
             var allRoleRequestsViewModel = new AllRoleRequestsViewModel

@@ -3,6 +3,11 @@
 @{
     var title = "All Role Requests";
     ViewData["Title"] = title;
+    ViewData["RouteParams"] = new Dictionary<string, string>
+    {
+        { "query", Model.query ?? "" },
+        { "roleId", Model.roleId ?? "" },
+    };
     var roleRequestList = Model.roleRequests.Items;
 }
 
@@ -21,4 +26,5 @@
             @await Html.PartialAsync("_RoleRequestCard", rr)
         }
     </div>
+    @await Html.PartialAsync("_Pagination", Model.roleRequests)
 </div>
