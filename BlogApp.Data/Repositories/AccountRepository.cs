@@ -159,33 +159,5 @@ namespace BlogApp.Data.Repositories
                 .Select(user => user.UserName)
                 .ToListAsync();
         }
-
-        /// <summary>
-        /// Method to get all roles
-        /// </summary>
-        /// <returns>all roles</returns>
-        public async Task<IEnumerable<IdentityRole>> GetAllRolesAsync()
-        {
-            return await roleManager.Roles
-                .ToListAsync();
-        }
-
-        public async Task AddUserToRole(string userId, string roleId)
-        {
-            var user = await userManager.FindByIdAsync(userId);
-            if (user == null)
-                throw new NotFoundException(RepoConstants.UserNotFound);
-
-            var role = await roleManager.FindByIdAsync(roleId);
-            if (role == null)
-                throw new NotFoundException(RepoConstants.UserNotFound);
-
-            await userManager.AddToRoleAsync(user, role.Name!);
-        }
-
-        public async Task<IdentityRole?> GetRoleByIdAsync(string roleId)
-        {
-            return await roleManager.FindByIdAsync(roleId);
-        }
     }
 }

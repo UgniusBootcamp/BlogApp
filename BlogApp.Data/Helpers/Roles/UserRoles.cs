@@ -15,11 +15,5 @@
             Author,
             Commentator,
             ];
-
-        public static readonly IReadOnlyCollection<string> RequestRoles = [
-            Voter,
-            Author,
-            Commentator,
-        ];
     }
 }
