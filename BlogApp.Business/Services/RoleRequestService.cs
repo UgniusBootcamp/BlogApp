@@ -71,9 +71,9 @@ namespace BlogApp.Business.Services
         /// <param name="query">user name and surname</param>
         /// <param name="pageIndex">page index</param>
         /// <param name="pageSize">page size</param>
-        public async Task<PaginatedList<RoleRequestDetailDto>> GetAllRoleRequestsAsync(string? roleId, string? query, int pageIndex, int pageSize)
+        public async Task<PaginatedList<RoleRequestDetailDto>> GetAllRoleRequestsAsync(string? query, int pageIndex, int pageSize)
         {
-            var roleRequests = await roleRequestRepository.GetRoleRequestsAsync(roleId, query, pageIndex, pageSize);
+            var roleRequests = await roleRequestRepository.GetRoleRequestsAsync(query, pageIndex, pageSize);
 
             var mapped = new PaginatedList<RoleRequestDetailDto>(mapper.Map<IEnumerable<RoleRequestDetailDto>>(roleRequests.Items), roleRequests.PageIndex, roleRequests.TotalPages);
 

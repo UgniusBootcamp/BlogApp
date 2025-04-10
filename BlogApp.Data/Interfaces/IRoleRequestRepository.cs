@@ -40,6 +40,6 @@ namespace BlogApp.Data.Interfaces
         /// <param name="pageIndex">page index</param>
         /// <param name="pageSize">page size</param>
         /// <returns>paginated role requests</returns>
-        public Task<PaginatedList<RoleRequest>> GetRoleRequestsAsync(string? roleId, string? query, int pageIndex, int pageSize);
+        public Task<PaginatedList<RoleRequest>> GetRoleRequestsAsync(string? query, int pageIndex, int pageSize);
     }
 }

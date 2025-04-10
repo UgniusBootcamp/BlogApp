@@ -45,17 +45,12 @@ namespace BlogApp.Data.Repositories
                .ToListAsync();
         }
 
-        public async Task<PaginatedList<RoleRequest>> GetRoleRequestsAsync(string? roleId, string? query, int pageIndex, int pageSize)
+        public async Task<PaginatedList<RoleRequest>> GetRoleRequestsAsync(string? query, int pageIndex, int pageSize)
         {
             var roleRequests = context.RoleRequests
                 .Include(r => r.Role)
                 .Include(r => r.User)
                 .AsQueryable();
-
-            if (roleId != null)
-            {
-                roleRequests = roleRequests.Where(r => r.RoleId == roleId);
-            }
 
             if (!String.IsNullOrEmpty(query))
             {
