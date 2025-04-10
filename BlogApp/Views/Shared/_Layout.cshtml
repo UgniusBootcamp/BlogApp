@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using BlogApp.Data.Helpers.Roles
+
+@{
+    var logoutModalId = "logoutModal";
+    var logoutModalIdLabel = "logoutModalLabel";
+    var title = "Role Requests";
+    var message = "Are you sure you want to log out?";
+    var confirmUrl = Url.Action("Logout", "Account");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -60,17 +70,23 @@
                             </a>
                         </div>
                         <div class="hidden space-x-6 sm:flex">
-                            <form method="post"
-                                  asp-controller="Account"
-                                  asp-action="Logout">
-                                <button type="submit"
-                                        class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
-                                    Log out
-                                </button>
-                            </form>
+                            <a asp-controller="RoleRequest"
+                               asp-action="@(User.IsInRole(UserRoles.Admin) ? "AllRoleRequest" : "UserRoleRequest")"
+                               class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
+                                Role Requests
+                            </a>
                         </div>
+                        <div class="hidden space-x-6 sm:flex">
+                            <button type="button"
+                                    onclick="openModal('@logoutModalId')"
+                                    class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
+                                Log out
+                            </button>
+                        </div>
+
                     }
                 </div>
+
                
             </div>
         </nav>
@@ -89,11 +105,24 @@
         <main role="main" class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             @RenderBody()
             @await Html.PartialAsync("_SnackBar", TempData["SnackbarMessage"] as string)
+
+            @{
+                var logoutModal = new BlogApp.Models.ConfirmationModalViewModel
+            {
+                ModalId = logoutModalId,
+                ModalIdLabel = logoutModalIdLabel,
+                Title = title,
+                Message = message,
+                ConfirmUrl = confirmUrl!
+            };
+            }
+
+            @await Html.PartialAsync("ConfirmationModal", logoutModal)
         </main>
     </div>
 
 
-    <footer class="border-t bg-primary-700">
+    <footer class=" bg-primary-700">
         <div class="mx-auto max-w-7xl px-4 py-6 text-center">
             <p class="text-sm text-white">
                 &copy; 2025 - BlogApp
@@ -119,3 +148,5 @@
       }
     });
 </script>
+
+

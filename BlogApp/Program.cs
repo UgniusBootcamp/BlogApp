@@ -52,10 +52,11 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IRoleRequestService, RoleRequestService>();
 
 //Add repos
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-
+builder.Services.AddScoped<IRoleRequestRepository, RoleRequestRepository>();
 
 //Add Identity
 builder.Services.AddIdentity<User, IdentityRole>()

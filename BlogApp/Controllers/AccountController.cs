@@ -50,6 +50,7 @@ namespace BlogApp.Controllers
         }
 
         [HttpPost(ControllerConstants.Register)]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             if(!ModelState.IsValid)
@@ -107,6 +108,7 @@ namespace BlogApp.Controllers
 
         [HttpPost]
         [Route(ControllerConstants.PasswordReset)]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PasswordReset(PasswordResetDto passwordResetDto)
         {
             if (!ModelState.IsValid)
@@ -122,7 +124,7 @@ namespace BlogApp.Controllers
                 await emailService.SendEmailAsync(resetMessage);
 
             }
-            catch (NotFoundException) { }
+            catch (NotFoundException) { } 
                 
 
             TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.PasswordResetConfirmMessage;
@@ -142,6 +144,7 @@ namespace BlogApp.Controllers
 
         [HttpPost]
         [Route(ControllerConstants.PasswordResetConfirmEndpoint)]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PasswordResetConfirm(PasswordResetConfirmDto passwordResetConfirm)
         {
             if (!ModelState.IsValid)
@@ -170,6 +173,7 @@ namespace BlogApp.Controllers
         [HttpPost]
         [Route(ControllerConstants.ProfileUpdate)]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateProfile(UserUpdateDto userDto)
         {
             if (!ModelState.IsValid)
