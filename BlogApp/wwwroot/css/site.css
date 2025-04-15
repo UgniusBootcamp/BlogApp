@@ -16,3 +16,8 @@
 
     --font-roboto: 'Roboto', sans-serif;
 }
+@layer components {
+    .article-image {
+        @apply object-cover w-full object-center rounded-md shadow-md;
+    }
+}

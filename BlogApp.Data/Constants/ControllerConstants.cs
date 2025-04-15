@@ -46,5 +46,17 @@ namespace BlogApp.Data.Constants
         public const string RoleRequestDeleted = "Role request has been deleted";
         public const string _RoleRequestCreateModal = "_RoleRequestCreateModal";
         public const string UpdateProfile = "UpdateProfile";
+        public const string Article = "Article";
+        public const string Articles = "Articles";
+        public const string MyArticles = "MyArticles";
+        public const string CreateArticle = "CreateArticle";
+        public const string UpdateArticle = "UpdateArticle";
+        public const string DeleteArticle = "DeleteArticle";
+        public const string ArticleHasBeenCreated = "Article has been created";
+        public const string Error = "Error";
+        public const string ArticleHasBeenUpdated = "Article has been updated";
+        public const string ArticleHasBeenDeleted = "Article has been deleted";
+        public const string EmailNotConfirmed = "EmailNotConfirmed";
+        public const string EmailConfirmationResend = "EmailConfirmationResend";
     }
 }

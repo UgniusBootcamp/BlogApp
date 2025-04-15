@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlogApp.Data.Dto.Article;
 using BlogApp.Data.Dto.RoleRequest;
 using BlogApp.Data.Dto.Roles;
 using BlogApp.Data.Dto.User;
@@ -30,6 +31,13 @@ namespace BlogApp.Data.Helpers.Mapper
 
             CreateMap<RoleRequest, RoleRequestDetailDto>()
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
+
+            //Article
+            CreateMap<Article, ArticleListDto>();
+            CreateMap<Article, ArticleDetailDto>();
+            CreateMap<ArticleCreateDto, Article>();
+            CreateMap<ArticleUpdateDto, Article>();
+            CreateMap<ArticleDetailDto, ArticleUpdateDto>();
         }
     }
 }

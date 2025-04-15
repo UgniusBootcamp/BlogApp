@@ -2,6 +2,7 @@
 @model BlogApp.Data.Dto.RoleRequest.RoleRequestListDto
 
 @{
+    var delete = "Delete";
     var roleRequestDeleteId = "roleRequestDeleteModal" + Model.Id;
     var roleRequestDeleteIdLabel = "roleRequestDeleteModalLabel" + Model.Id;
     var title = "Delete Role Request";
@@ -17,7 +18,7 @@
             <button type="submit"
                     onclick="openModal('@roleRequestDeleteId')"
                     class="text-red-600 hover:text-red-800 transition-colors font-medium cursor-pointer">
-                Delete
+                @delete
             </button>
     </div>
     @{

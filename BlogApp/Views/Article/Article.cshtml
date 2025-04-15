@@ -1,0 +1,56 @@
+﻿@model BlogApp.Data.Dto.Article.ArticleDetailDto
+@using BlogApp.Data.Constants
+
+@{
+    var title = "Article Details";
+    ViewData["Title"] = title;
+
+    var about = "About";
+    var publishedOn = "Published on";
+}
+
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">@Model.Title</h1>
+
+
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <div class="mb-8 rounded-lg overflow-hidden shadow-lg">
+            <img src="@Model.ImageUrl" alt="@Model.Title" class="w-full h-auto max-h-96 object-cover">
+        </div>
+    }
+
+    <div class="mt-12 p-6 bg-gray-50 rounded-lg">
+        <div>
+            <div class="flex space-x-4">
+                <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-bold">
+                    @Model.User.Name.Substring(0, 1)@Model.User.Surname.Substring(0, 1)
+                </div>
+                <div>
+                    <p class="font-medium text-gray-900">
+                        @Model.User.Name @Model.User.Surname
+                        <span class="text-gray-500 font-normal">@@@Model.User.UserName</span>
+                    </p>
+                    <p class="text-sm text-gray-500">
+                        @publishedOn @Model.CreatedAt.ToString("MMMM dd, yyyy")
+                    </p>
+                </div>
+            </div>
+        </div>
+        @if (!string.IsNullOrEmpty(Model.Content))
+        {
+        <div class="pt-4">
+            <h3 class="text-lg font-bold text-gray-900">@about @Model.Title</h3>
+
+                <div class="text-gray-600 mt-1">
+                    @Html.Raw(Model.Content)
+                </div>
+        </div>
+        }
+    </div>
+
+    
+</div>

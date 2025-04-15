@@ -14,6 +14,6 @@ namespace BlogApp.Data.Entities
         public string Surname { get; set; } = null!;
 
         public ICollection<RoleRequest> RoleRequests { get; set; } = [];
-
+        public ICollection<Article> Articles { get; set; } = [];
     }
 }

@@ -1,0 +1,76 @@
+﻿@using BlogApp.Data.Constants
+@using System.Security.Claims
+@model BlogApp.Data.Dto.Article.ArticleListDto
+
+@{
+    var readMore = "Read More";
+    var isAuthor = Model.User.Id == User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    var edit = "Edit";
+    var delete = "Delete";
+
+    var articleDeleteId = "articleDelete" + Model.Id;
+    var articleDeleteIdLabel = "articleDeleteLabel" + Model.Id;
+    var title = "Delete Article";
+    var message = "Are you sure you want to delete this article?";
+    var confirmUrl = Url.Action(ControllerConstants.DeleteArticle, ControllerConstants.Article, new { id = Model.Id });
+
+}
+
+<div class="w-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 mb-6">
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <img src="@Model.ImageUrl" alt="@Model.Title"
+             class="article-image" />
+    }
+
+
+    <div class="p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2 transition-colors duration-200">
+            @Model.Title
+        </h2>
+
+        <div class="flex items-center mb-4">
+            <div class="flex flex-col">
+                <span class="text-sm font-medium text-gray-700">
+                    @Model.User.Name @Model.User.Surname <span class="text-sm text-gray-500">@@@Model.User.UserName</span>
+                </span>
+                <span class="text-xs text-gray-500">
+                    @Model.CreatedAt.ToString("MMMM dd, yyyy")
+                </span>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap justify-end items-center pt-4 border-t border-gray-100 gap-4">
+            @if(isAuthor)
+            {
+                <button type="submit"
+                        onclick="openModal('@articleDeleteId')"
+                        class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 transition-colors duration-200 cursor-pointer">
+                    @delete
+                </button>
+                <a asp-action=@ControllerConstants.UpdateArticle asp-controller=@ControllerConstants.Article asp-route-id=@Model.Id
+                   class="px-4 py-2 bg-primary-800 text-white text-sm font-medium rounded-md hover:bg-primary-900 transition-colors duration-200">
+                    @edit
+                </a>
+            }
+            <a asp-action=@ControllerConstants.Article asp-controller=@ControllerConstants.Article asp-route-id=@Model.Id 
+            class="px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-md hover:bg-primary-700 transition-colors duration-200">
+                @readMore
+            </a>
+        </div>
+    </div>
+
+    @{
+        var deleteModal = new BlogApp.Models.ConfirmationModalViewModel
+            {
+                ModalId = articleDeleteId,
+                ModalIdLabel = articleDeleteIdLabel,
+                Title = title,
+                Message = message,
+                ConfirmUrl = confirmUrl!
+            };
+    }
+
+    @await Html.PartialAsync("ConfirmationModal", deleteModal)
+
+</div>

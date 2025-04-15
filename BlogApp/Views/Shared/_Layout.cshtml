@@ -4,7 +4,7 @@
 @{
     var logoutModalId = "logoutModal";
     var logoutModalIdLabel = "logoutModalLabel";
-    var title = "Role Requests";
+    var title = "Log out";
     var message = "Are you sure you want to log out?";
     var confirmUrl = Url.Action(ControllerConstants.Logout, ControllerConstants.Account);
 }
@@ -63,6 +63,23 @@
                     else
                     {
                         <div class="hidden space-x-6 sm:flex">
+                            <a asp-controller=@ControllerConstants.Article
+                               asp-action=@ControllerConstants.Articles
+                               class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
+                                Articles
+                            </a>
+                        </div>
+                        @if(User.IsInRole(UserRoles.Author))
+                        {
+                            <div class="hidden space-x-6 sm:flex">
+                                <a asp-controller=@ControllerConstants.Article
+                                   asp-action=@ControllerConstants.MyArticles
+                                   class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
+                                    MyArticles
+                                </a>
+                            </div>
+                        }
+                        <div class="hidden space-x-6 sm:flex">
                             <a asp-controller=@ControllerConstants.Account
                                asp-action=@ControllerConstants.Profile
                                class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
@@ -70,12 +87,13 @@
                             </a>
                         </div>
                         <div class="hidden space-x-6 sm:flex">
-                            <a asp-controller="RoleRequest"
+                            <a asp-controller=@ControllerConstants.RoleRequest
                                asp-action="@(User.IsInRole(UserRoles.Admin) ? ControllerConstants.AllRoleRequest : ControllerConstants.UserRoleRequest)"
                                class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
                                 Role Requests
                             </a>
                         </div>
+
                         <div class="hidden space-x-6 sm:flex">
                             <button type="button"
                                     onclick="openModal('@logoutModalId')"

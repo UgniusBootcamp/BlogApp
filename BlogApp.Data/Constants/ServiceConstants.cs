@@ -29,5 +29,10 @@
         public const string RoleRequestNotFound = "Role request not found";
         public const string RoleNotFound = "Role not found";
         public const string UserAlreadyInRole = "User already in role";
+        public static readonly string[] AllowedTypes = { "image/jpeg", "image/png", "image/gif" };
+        public static readonly string[] AllowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
+        public const string AvailableFileTypes = "Available file types: jpg, jpeg, png, gif";
+        public const string ArticleNotFound = "Article not found";
+        public const string ArticleNotBelongsToUser = "Article does not belong to user";
     }
 }

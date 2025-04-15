@@ -37,6 +37,9 @@ builder.Services.AddDbContext<BlogAppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("LocalDatabase"));
 });
 
+//Azure blob
+builder.Services.Configure<AzureBlobServiceConfiguration>(builder.Configuration.GetSection("AzureBlob"));
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddDataAnnotationsLocalization();
@@ -53,10 +56,13 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IRoleRequestService, RoleRequestService>();
+builder.Services.AddScoped<IBlobService, BlobService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
 
 //Add repos
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IRoleRequestRepository, RoleRequestRepository>();
+builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 
 //Add Identity
 builder.Services.AddIdentity<User, IdentityRole>()
