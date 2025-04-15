@@ -1434,6 +1434,27 @@
   .text-red-600 {
     color: var(--color-red-600);
   }
+  .text-green-800 {
+    color: var(--color-green-800);
+  }
+  .text-indigo-200 {
+    color: var(--color-indigo-200);
+  }
+  .text-primary-500 {
+    color: var(--color-primary-500);
+  }
+  .text-primary-600 {
+    color: var(--color-primary-600);
+  }
+  .text-primary-700 {
+    color: var(--color-primary-700);
+  }
+  .text-primary-800 {
+    color: var(--color-primary-800);
+  }
+  .text-red-600 {
+    color: var(--color-red-600);
+  }
   .text-white {
     color: var(--color-white);
   }
@@ -1689,7 +1710,7 @@
   .hover\:text-gray-600 {
     &:hover {
       @media (hover: hover) {
-        color: var(--color-gray-600);
+        background-color: var(--color-indigo-700);
       }
     }
   }
@@ -1703,7 +1724,7 @@
   .hover\:text-indigo-600 {
     &:hover {
       @media (hover: hover) {
-        color: var(--color-indigo-600);
+        background-color: var(--color-primary-400);
       }
     }
   }

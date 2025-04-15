@@ -159,7 +159,7 @@ namespace BlogApp.Controllers
                 await emailService.SendEmailAsync(resetMessage);
 
             }
-            catch (NotFoundException) { } 
+            catch (NotFoundException) { }
                 
 
             TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.PasswordResetConfirmMessage;
