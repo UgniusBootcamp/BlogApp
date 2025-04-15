@@ -15,6 +15,11 @@ namespace BlogApp.Business.Services
         IMapper mapper
         ) : IArticleService
     {
+        /// <summary>
+        /// Method to create article
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <param name="articleCreateDto">article create dto</param>
         public async Task CreateArticleAsync(string userId, ArticleCreateDto articleCreateDto)
         {
             var article = mapper.Map<Article>(articleCreateDto);
@@ -32,6 +37,13 @@ namespace BlogApp.Business.Services
             }
         }
 
+        /// <summary>
+        /// Method to delete article
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <param name="id">article id</param>
+        /// <exception cref="NotFoundException"> if article not found</exception>
+        /// <exception cref="ForbiddenException">article does not belong to user</exception>
         public async Task DeleteArticleAsync(string userId, int id)
         {
             var article = await articleRepository.GetArticleAsync(id);
@@ -45,6 +57,12 @@ namespace BlogApp.Business.Services
             await articleRepository.DeleteArticleAsync(article);
         }
 
+        /// <summary>
+        /// Method to get article by id
+        /// </summary>
+        /// <param name="id">article id</param>
+        /// <returns>artilce</returns>
+        /// <exception cref="NotFoundException">if article not found</exception>
         public async Task<ArticleDetailDto> GetArticleAsync(int id)
         {
             var article = await articleRepository.GetArticleAsync(id);
@@ -55,6 +73,13 @@ namespace BlogApp.Business.Services
             return mapper.Map<ArticleDetailDto>(article);
         }
 
+        /// <summary>
+        /// Method to get paginated list of articles
+        /// </summary>
+        /// <param name="pageIndex">page index</param>
+        /// <param name="pageSize">page size</param>
+        /// <param name="userId">user id</param>
+        /// <returns>paginated list of articles</returns>
         public async Task<PaginatedList<ArticleListDto>> GetArticlesAsync(int pageIndex, int pageSize, string? userId = null)
         {
             var articles = await articleRepository.GetArticlesAsync(pageIndex, pageSize, userId);
@@ -62,6 +87,13 @@ namespace BlogApp.Business.Services
             return new PaginatedList<ArticleListDto>(mapper.Map<List<ArticleListDto>>(articles.Items), articles.PageIndex, articles.TotalPages);
         }
 
+        /// <summary>
+        /// Method to update article
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <param name="articleUpdateDto">article update dto</param>
+        /// <exception cref="NotFoundException">if article not found</exception>
+        /// <exception cref="ForbiddenException">article does not belong to user</exception>
         public async Task UpdateArticleAsync(string userId, ArticleUpdateDto articleUpdateDto)
         {
             var article = await articleRepository.GetArticleAsync(articleUpdateDto.Id);
