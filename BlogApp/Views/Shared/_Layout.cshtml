@@ -50,6 +50,13 @@
                        asp-action=@ControllerConstants.Index>
                         Home
                     </a>
+                    <div class="hidden space-x-6 sm:flex">
+                        <a asp-controller=@ControllerConstants.Article
+                           asp-action=@ControllerConstants.Articles
+                           class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
+                            Articles
+                        </a>
+                    </div>
                     @if (!User.Identity?.IsAuthenticated ?? true)
                     {
                         <div class="hidden space-x-6 sm:flex">
@@ -62,13 +69,6 @@
                     }
                     else
                     {
-                        <div class="hidden space-x-6 sm:flex">
-                            <a asp-controller=@ControllerConstants.Article
-                               asp-action=@ControllerConstants.Articles
-                               class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
-                                Articles
-                            </a>
-                        </div>
                         @if(User.IsInRole(UserRoles.Author))
                         {
                             <div class="hidden space-x-6 sm:flex">

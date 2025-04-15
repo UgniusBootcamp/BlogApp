@@ -25,9 +25,10 @@ namespace BlogApp.Controllers
                 ModelState.AddModelError(ControllerConstants.Password, ex.Message);
                 return View(loginDto);
             }
-            catch (EmailNotConfirmedException)
+            catch (EmailNotConfirmedException ex)
             {
                 TempData[ControllerConstants.EmailNotConfirmed] = ControllerConstants.EmailNotConfirmed;
+                ModelState.AddModelError(ControllerConstants.Password, ex.Message);
                 return View(loginDto);
             }
             TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.LogInSuccessful;
