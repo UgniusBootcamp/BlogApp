@@ -25,6 +25,12 @@ namespace BlogApp.Controllers
                 ModelState.AddModelError(ControllerConstants.Password, ex.Message);
                 return View(loginDto);
             }
+            catch (EmailNotConfirmedException ex)
+            {
+                TempData[ControllerConstants.EmailNotConfirmed] = ControllerConstants.EmailNotConfirmed;
+                ModelState.AddModelError(ControllerConstants.Password, ex.Message);
+                return View(loginDto);
+            }
             TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.LogInSuccessful;
 
             return RedirectToAction(ControllerConstants.Index, ControllerConstants.Home);
@@ -50,6 +56,7 @@ namespace BlogApp.Controllers
         }
 
         [HttpPost(ControllerConstants.Register)]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             if(!ModelState.IsValid)
@@ -90,6 +97,36 @@ namespace BlogApp.Controllers
             return View(new RegisterDto());
         }
 
+        [HttpGet(ControllerConstants.EmailConfirmationResend)]
+        public IActionResult EmailConfirmationResend()
+        {
+            return View(new EmailConfirmationResendDto());
+        }
+
+        [HttpPost(ControllerConstants.EmailConfirmationResend)]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EmailConfirmationResend(EmailConfirmationResendDto emailConfirmationResendDto)
+        {
+            if (!ModelState.IsValid)
+                return View(emailConfirmationResendDto);
+
+            try
+            {
+                var user = await accountService.GetUserByEmailAsync(emailConfirmationResendDto.Email);
+
+                var route = Url.Action(ControllerConstants.EmailConfirmation, ControllerConstants.Account, null, Request.Scheme);
+
+                var confirmationMessage = await messageService.CreateConfirmationMessageAsync(user, route!);
+
+                await emailService.SendEmailAsync(confirmationMessage);
+            }
+            catch (NotFoundException) { }
+
+            TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.ConfirmationEmailSent;
+
+            return RedirectToAction(ControllerConstants.Login);
+        }
+
         [HttpGet(ControllerConstants.EmailConfirmation)]
         public async Task<IActionResult> EmailConfirmation([FromQuery] string email, [FromQuery] string token)
         {
@@ -107,6 +144,7 @@ namespace BlogApp.Controllers
 
         [HttpPost]
         [Route(ControllerConstants.PasswordReset)]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PasswordReset(PasswordResetDto passwordResetDto)
         {
             if (!ModelState.IsValid)
@@ -142,6 +180,7 @@ namespace BlogApp.Controllers
 
         [HttpPost]
         [Route(ControllerConstants.PasswordResetConfirmEndpoint)]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PasswordResetConfirm(PasswordResetConfirmDto passwordResetConfirm)
         {
             if (!ModelState.IsValid)
@@ -170,6 +209,7 @@ namespace BlogApp.Controllers
         [HttpPost]
         [Route(ControllerConstants.ProfileUpdate)]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateProfile(UserUpdateDto userDto)
         {
             if (!ModelState.IsValid)

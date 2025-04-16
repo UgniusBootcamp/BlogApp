@@ -78,5 +78,25 @@ namespace BlogApp.Data.Interfaces
         /// <param name="userName">base username</param>
         /// <returns>similar usernames</returns>
         public Task<List<string?>> FindSimilarUsernamesAsync(string userName);
+
+        /// <summary>
+        /// Method to get all roles
+        /// </summary>
+        /// <returns>all roles</returns>
+        public Task<IEnumerable<IdentityRole>> GetAllRolesAsync();
+
+        /// <summary>
+        /// Method to add user to role
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <param name="roleId">role id</param>
+        public Task AddUserToRole(string userId, string roleId);
+
+        /// <summary>
+        /// Get role by id
+        /// </summary>
+        /// <param name="roleId">roleId</param>
+        /// <returns>role</returns>
+        public Task<IdentityRole?> GetRoleByIdAsync(string roleId);
     }
 }

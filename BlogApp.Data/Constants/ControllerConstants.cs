@@ -1,4 +1,6 @@
-﻿namespace BlogApp.Data.Constants
+﻿using Org.BouncyCastle.Asn1.Mozilla;
+
+namespace BlogApp.Data.Constants
 {
     public static class ControllerConstants
     {
@@ -12,6 +14,13 @@
         public const string ProfileUpdate = "Profile/Update";
         public const string Home = "Home";
         public const string Index = "Index";
+        public const string UserRoleRequest = "UserRoleRequest";
+        public const string RoleRequest = "RoleRequest";
+        public const string ConfirmRoleRequest = $"ConfirmRoleRequest";
+        public const string AllRoleRequest = "AllRoleRequest";
+        public const string DeleteRoleRequest = "DeleteRoleRequest";
+        public const string CreateRoleRequest = "CreateRoleRequest";
+        public const string EligibleRoles = "EligibleRoles";
         public const string SnackbarMessage = "SnackbarMessage";
         public const string Password = "Password";
         public const string LogInSuccessful = "Log in Successful!";
@@ -31,6 +40,23 @@
         public const string AccessDeniedEndpoint = "/Error/AccessDenied";
         public const string LoginEndpoint = "/Account/Login";
         public const string AppAuth = "AppAuth";
-
+        public const string RoleRequestCreated = "Role request has been created";
+        public const string CreateUserRoleRequest = "CreateUserRoleRequest";
+        public const string RoleRequestApproved = "Role request has been approved";
+        public const string RoleRequestDeleted = "Role request has been deleted";
+        public const string _RoleRequestCreateModal = "_RoleRequestCreateModal";
+        public const string UpdateProfile = "UpdateProfile";
+        public const string Article = "Article";
+        public const string Articles = "Articles";
+        public const string MyArticles = "MyArticles";
+        public const string CreateArticle = "CreateArticle";
+        public const string UpdateArticle = "UpdateArticle";
+        public const string DeleteArticle = "DeleteArticle";
+        public const string ArticleHasBeenCreated = "Article has been created";
+        public const string Error = "Error";
+        public const string ArticleHasBeenUpdated = "Article has been updated";
+        public const string ArticleHasBeenDeleted = "Article has been deleted";
+        public const string EmailNotConfirmed = "EmailNotConfirmed";
+        public const string EmailConfirmationResend = "EmailConfirmationResend";
     }
 }

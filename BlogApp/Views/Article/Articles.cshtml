@@ -1,0 +1,29 @@
+﻿@using BlogApp.Data.Helpers.Mapper
+@using BlogApp.Data.Constants
+
+@model PaginatedList<BlogApp.Data.Dto.Article.ArticleListDto>
+
+@{
+    var title = "Articles";
+    ViewData["Title"] = title;
+
+    var articlesList = Model.Items;
+}
+
+<div class="container mx-auto px-4 py-8 ">
+    <header class="mb-8">
+        <div class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-800 tracking-tight relative inline-block">
+                @title
+                <span class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></span>
+            </h1>
+        </div>
+    </header>
+    <div class="grid w-full">
+        @foreach (var article in articlesList)
+        {
+            @await Html.PartialAsync("_ArticleCard", article)
+        }
+    </div>
+    @await Html.PartialAsync("_Pagination", Model)
+</div>

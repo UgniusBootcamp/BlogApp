@@ -1,4 +1,5 @@
-﻿@model BlogApp.Data.Dto.User.LoginDto
+﻿@using BlogApp.Data.Constants
+@model BlogApp.Data.Dto.User.LoginDto
 @{
     var title = "Login";
     ViewData["Title"] = title;
@@ -6,12 +7,13 @@
     var registerNow = "Register Now";
     var reset = "Reset";
     var forgotPassword = "Forgot Password?";
+    var resendEmail = "Resend Email Confirmation";
 }
 
 <div class="max-w-md mx-auto p-8 bg-white rounded-lg shadow-lg mt-10 ">
     <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">@title</h1>
 
-    <form asp-action="Login" asp-controller="Account" method="post" class="space-y-5">
+    <form asp-action=@ControllerConstants.Login asp-controller=@ControllerConstants.Account method="post" class="space-y-5">
         @Html.AntiForgeryToken()
 
         <div>
@@ -33,23 +35,29 @@
 
         <div class="pt-2">
             <button type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors hover:cursor-pointer">
+                    class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
                 @login 
             </button>
         </div>
 
         <div class="text-center text-sm text-gray-600">
             New to the Blog App?
-            <a asp-action="Register" asp-controller="Account" class="text-blue-600 hover:text-blue-800 font-medium">
+            <a asp-action=@ControllerConstants.Register asp-controller=@ControllerConstants.Account class="text-blue-600 hover:text-blue-800 font-medium">
                 @registerNow
             </a>
         </div>
         <div class="text-center text-sm text-gray-600">
             @forgotPassword
-            <a asp-action="PasswordReset" asp-controller="Account" class="text-blue-600 hover:text-blue-800 font-medium">
+            <a asp-action=@ControllerConstants.PasswordReset asp-controller=@ControllerConstants.Account class="text-blue-600 hover:text-blue-800 font-medium">
                 @reset
             </a>
         </div>
 
     </form>
+    @if (TempData[ControllerConstants.EmailNotConfirmed] != null)
+    {
+        <a asp-action=@ControllerConstants.EmailConfirmationResend asp-controller=@ControllerConstants.Account class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+            @resendEmail
+        </a>
+    }
 </div>

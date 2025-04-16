@@ -42,7 +42,7 @@ namespace BlogApp.Business.Services
 
             var isEmailConfirmed = await accountRepository.IsEmailConfirmedAsync(user);
             if (!isEmailConfirmed)
-                throw new UnauthorizedException(ServiceConstants.EmailIsNotConfirmed);
+                throw new EmailNotConfirmedException(ServiceConstants.EmailIsNotConfirmed);
 
             await signInManager.SignInAsync(user, isPersistent: true);
         }

@@ -26,5 +26,13 @@
         public const string PasswordReset = "Password Reset";
         public const string ResetPassword = "Reset Password";
         public const string Button = "<a href='{0}' style='display:inline-block;padding:10px 20px;font-size:16px;color:#fff;background-color:#007bff;text-decoration:none;border-radius:5px;'>{1}</a>";
+        public const string RoleRequestNotFound = "Role request not found";
+        public const string RoleNotFound = "Role not found";
+        public const string UserAlreadyInRole = "User already in role";
+        public static readonly string[] AllowedTypes = { "image/jpeg", "image/png", "image/gif" };
+        public static readonly string[] AllowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
+        public const string AvailableFileTypes = "Available file types: jpg, jpeg, png, gif";
+        public const string ArticleNotFound = "Article not found";
+        public const string ArticleNotBelongsToUser = "Article does not belong to user";
     }
 }
