@@ -11,6 +11,7 @@ namespace BlogApp.Controllers
     [Route("[controller]")]
     public class ArticleController(
         IArticleService articleService,
+        IArticleVoteService articleVoteService,
         IMapper mapper
         ) : Controller
     {
@@ -18,6 +19,14 @@ namespace BlogApp.Controllers
         public async Task<IActionResult> Articles(int pageIndex = 1, int pageSize = 10)
         {
             var articles = await articleService.GetArticlesAsync(pageIndex, pageSize);
+
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            foreach (var article in articles.Items)
+            {
+                article.Vote = await articleVoteService.GetArticleVotesAsync(article.Id, userId);
+            }
+
             return View(articles);
         }
 
@@ -25,6 +34,10 @@ namespace BlogApp.Controllers
         public async Task<IActionResult> Article(int id)
         {
             var article = await articleService.GetArticleAsync(id);
+
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            article.Vote = await articleVoteService.GetArticleVotesAsync(article.Id, userId);
+
             return View(article);
         }
 
@@ -34,6 +47,11 @@ namespace BlogApp.Controllers
         {
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!;
             var myArticles = await articleService.GetArticlesAsync(pageIndex, pageSize, userId);
+
+            foreach (var article in myArticles.Items)
+            {
+                article.Vote = await articleVoteService.GetArticleVotesAsync(article.Id, userId);
+            }
 
             return View(myArticles);
         }

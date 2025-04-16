@@ -15,5 +15,6 @@ namespace BlogApp.Data.Entities
 
         public ICollection<RoleRequest> RoleRequests { get; set; } = [];
         public ICollection<Article> Articles { get; set; } = [];
+        public ICollection<ArticleVote> ArticleVotes { get; set; } = [];
     }
 }

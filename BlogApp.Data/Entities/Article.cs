@@ -21,5 +21,7 @@ namespace BlogApp.Data.Entities
 
         public string UserId { get; set; } = null!;
         public User User { get; set; } = null!;
+
+        public ICollection<ArticleVote> ArticleVotes { get; set; } = [];
     }
 }

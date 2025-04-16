@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BlogApp.Data.Dto.Article;
+using BlogApp.Data.Dto.ArticleVote;
 using BlogApp.Data.Dto.RoleRequest;
 using BlogApp.Data.Dto.Roles;
 using BlogApp.Data.Dto.User;
@@ -38,6 +39,10 @@ namespace BlogApp.Data.Helpers.Mapper
             CreateMap<ArticleCreateDto, Article>();
             CreateMap<ArticleUpdateDto, Article>();
             CreateMap<ArticleDetailDto, ArticleUpdateDto>();
+
+            //ArticleVote
+            CreateMap<ArticleVoteCreateDto, ArticleVote>();
+            CreateMap<ArticleVote, ArticleVoteReadDto>();
         }
     }
 }
