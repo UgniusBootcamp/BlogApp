@@ -58,5 +58,7 @@ namespace BlogApp.Data.Constants
         public const string ArticleHasBeenDeleted = "Article has been deleted";
         public const string EmailNotConfirmed = "EmailNotConfirmed";
         public const string EmailConfirmationResend = "EmailConfirmationResend";
+        public const string ArticleVote = "ArticleVote";
+        public const string _ArticleVote = "_ArticleVote";
     }
 }

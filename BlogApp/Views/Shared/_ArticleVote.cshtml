@@ -1,0 +1,82 @@
+﻿@model BlogApp.Data.Dto.ArticleVote.ArticleVoteReadDto
+@using BlogApp.Data.Helpers.Roles
+@using BlogApp.Data.Constants
+
+@{
+    var isVoter = User.IsInRole(UserRoles.Voter);
+    var voteValue = Model.VoteValue;
+}
+
+<div id="vote-container-@Model.ArticleId">
+    <div class="flex justify-end items-center space-x-6">
+        <div class="flex items-center group">
+            @if (isVoter)
+            {
+                <form data-article-id="@Model.ArticleId" method="post" class="vote-form">
+                    @Html.AntiForgeryToken()
+                    <input name="ArticleId" value="@Model.ArticleId" type="hidden" />
+                    <input name="VoteValue" value="true" type="hidden" />
+                    <button type="submit" class="p-3 rounded-full bg-gray-100 hover:scale-[1.1] hover:bg-indigo-50 text-gray-500 hover:text-indigo-500 transition duration-200 @(voteValue == true ? "text-indigo-500" : "") @(voteValue == true ? "bg-indigo-50" : "") cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                        </svg>
+                    </button>
+                </form>
+            }
+            else
+            {
+                <div class="p-2 rounded-full bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                    </svg>
+                </div>
+            }
+            <span class="ml-2 text-lg font-medium text-gray-700 min-w-[20px] text-center">
+                @Model.PositiveVotes
+            </span>
+        </div>
+
+        <div class="h-8 w-px bg-gray-200"></div>
+
+        <div class="flex items-center group">
+            <span class="mr-2 text-lg font-medium text-gray-700 min-w-[20px] text-center">
+                @Model.NegativeVotes
+            </span>
+            @if (isVoter)
+            {
+                <form data-article-id="@Model.ArticleId" method="post" class="vote-form">
+                    @Html.AntiForgeryToken()
+                    <input name="ArticleId" value="@Model.ArticleId" type="hidden" />
+                    <input name="VoteValue" value="false" type="hidden" />
+                    <button type="submit" class="p-3 rounded-full bg-gray-100 hover:bg-red-50 hover:scale-[1.1] text-gray-500 hover:text-red-500 transition duration-200 @(voteValue == false ? "bg-red-50" : "") @(voteValue == false ? "text-red-500" : "") cursor-pointer ">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-6 w-6"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                </form>
+            }
+            else
+            {
+                <div class="p-2 rounded-full bg-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="~/js/vote.js"></script>
+
+
+
+

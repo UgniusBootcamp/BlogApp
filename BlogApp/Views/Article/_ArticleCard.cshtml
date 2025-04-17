@@ -25,9 +25,14 @@
 
 
     <div class="p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-2 transition-colors duration-200">
-            @Model.Title
-        </h2>
+        <div class="flex justify-between items-center">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2 transition-colors duration-200">
+                @Model.Title
+            </h2>
+
+            @await Html.PartialAsync(ControllerConstants._ArticleVote, Model.Vote)
+        </div>
+        
 
         <div class="flex items-center mb-4">
             <div class="flex flex-col">
