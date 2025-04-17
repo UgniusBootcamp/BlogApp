@@ -31,7 +31,7 @@ namespace BlogApp.Data.Data
 
             builder.Entity<ArticleVote>(entity =>
             {
-                entity.HasKey(av => new { av.ArticleId, av.UserId });
+                entity.HasIndex(av => new { av.ArticleId, av.UserId }).IsUnique();
 
                 entity.HasOne(av => av.Article).WithMany(a => a.ArticleVotes).HasForeignKey(av => av.ArticleId).OnDelete(DeleteBehavior.Cascade);
 

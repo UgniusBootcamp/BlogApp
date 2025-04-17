@@ -64,11 +64,14 @@ namespace BlogApp.Data.Constants
         public const string CreateComment = "CreateComment";
         public const string EditComment = "EditComment";
         public const string DeleteComment = "DeleteComment";
+        public const string Comment = "Comment";
         public const string _Comment = "_Comment";
         public const string _CommentCreate = "_CommentCreate";
         public const string _CommentEdit = "_CommentEdit";
         public const string CommentCreated = "Comment has been created";
         public const string CommentEdited = "Comment has been edited";
         public const string CommentDeleted = "Comment has been deleted";
+        public const string _Pagination = "_Pagination";
+        public const string _ArticleCard = "_ArticleCard";
     }
 }

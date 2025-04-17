@@ -50,22 +50,26 @@ namespace BlogApp.Data.Migrations
 
             modelBuilder.Entity("BlogApp.Data.Entities.ArticleVote", b =>
                 {
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("VoteValue")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ArticleId", "UserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("ArticleId", "UserId")
+                        .IsUnique();
 
                     b.ToTable("ArticleVotes");
                 });

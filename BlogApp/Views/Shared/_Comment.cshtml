@@ -1,0 +1,26 @@
+﻿@model BlogApp.Data.Dto.Comment.CommentReadDto
+
+@using BlogApp.Data.Constants
+
+<div class="my-6 p-6 bg-gray-50 rounded-lg">
+    <div class="flex justify-between">
+        <div class="flex space-x-4">
+            <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-bold">
+                @Model.User.Name.Substring(0, 1)@Model.User.Surname.Substring(0, 1)
+            </div>
+            <div>
+                <p class="font-medium text-gray-900">
+                    @Model.User.Name @Model.User.Surname
+                    <span class="text-gray-500 font-normal">@@@Model.User.UserName</span>
+                </p>
+                <p class="text-sm text-gray-500">
+                    @Model.CreatedAt.ToString("MMMM dd, yyyy")
+                </p>
+            </div>
+        </div>
+    </div>
+
+        <div class="text-gray-600 pt-4">
+                @Html.Raw(Model.Content)
+            </div>
+</div>
