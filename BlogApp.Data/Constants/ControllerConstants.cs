@@ -1,4 +1,5 @@
-﻿using Org.BouncyCastle.Asn1.Mozilla;
+﻿using MimeKit.Cryptography;
+using Org.BouncyCastle.Asn1.Mozilla;
 
 namespace BlogApp.Data.Constants
 {
@@ -60,5 +61,14 @@ namespace BlogApp.Data.Constants
         public const string EmailConfirmationResend = "EmailConfirmationResend";
         public const string ArticleVote = "ArticleVote";
         public const string _ArticleVote = "_ArticleVote";
+        public const string CreateComment = "CreateComment";
+        public const string EditComment = "EditComment";
+        public const string DeleteComment = "DeleteComment";
+        public const string _Comment = "_Comment";
+        public const string _CommentCreate = "_CommentCreate";
+        public const string _CommentEdit = "_CommentEdit";
+        public const string CommentCreated = "Comment has been created";
+        public const string CommentEdited = "Comment has been edited";
+        public const string CommentDeleted = "Comment has been deleted";
     }
 }

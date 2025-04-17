@@ -34,5 +34,7 @@
         public const string AvailableFileTypes = "Available file types: jpg, jpeg, png, gif";
         public const string ArticleNotFound = "Article not found";
         public const string ArticleNotBelongsToUser = "Article does not belong to user";
+        public const string CommentNotFound = "Comment not found";
+        public const string CommentNotBelongsToUser = "Comment does not belong to user";
     }
 }
