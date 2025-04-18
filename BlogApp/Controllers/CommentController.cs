@@ -31,7 +31,6 @@ namespace BlogApp.Controllers
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!;
 
             await commentService.EditCommentAsync(userId, editCommentDto);
-            TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.CommentEdited;
 
             var comment = await commentService.GetCommentByIdAsync(editCommentDto.CommentId);
 

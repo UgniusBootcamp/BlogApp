@@ -8,7 +8,7 @@ namespace BlogApp.Data.Dto.Comment
         public int CommentId { get; set; }
 
         [Required]
-        [MaxLength(500, ErrorMessage = "Comment cannot exceed 500 characters")]
+        [StringLength(500, MinimumLength = 1, ErrorMessage = "Content must be at least 1 character.")]
         public string Content { get; set; } = null!;
     }
 }

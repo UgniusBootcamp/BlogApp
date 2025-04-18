@@ -8,7 +8,7 @@ namespace BlogApp.Data.Dto.Comment
         public int ArticleId { get; set; }
 
         [Required]
-        [StringLength(1000, MinimumLength = 1, ErrorMessage = "Content must be at least 1 character.")]
+        [StringLength(500, MinimumLength = 1, ErrorMessage = "Content must be at least 1 character.")]
         public string Content { get; set; } = null!;
     }
 }
