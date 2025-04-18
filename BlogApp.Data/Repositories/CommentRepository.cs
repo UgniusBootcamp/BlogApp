@@ -8,24 +8,41 @@ namespace BlogApp.Data.Repositories
 {
     public class CommentRepository(BlogAppDbContext context) : ICommentRepository
     {
+        /// <summary>
+        /// Method to create comment
+        /// </summary>
+        /// <param name="comment">comment to create</param>
         public async Task CreateCommentAsync(Comment comment)
         {
             await context.Comments.AddAsync(comment);
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Method to delete comment
+        /// </summary>
+        /// <param name="comment">comment to delete</param>
         public async Task DeleteCommentAsync(Comment comment)
         {
             context.Comments.Remove(comment);
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Method to edit comment
+        /// </summary>
+        /// <param name="comment">comment to edit</param>
         public async Task EditCommentAsync(Comment comment)
         {
             context.Comments.Update(comment);
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Method to get comment by id
+        /// </summary>
+        /// <param name="commentId">comment id</param>
+        /// <returns>comment</returns>
         public async Task<Comment?> GetCommentByIdAsync(int commentId)
         {
             return await context.Comments
@@ -33,6 +50,13 @@ namespace BlogApp.Data.Repositories
                 .FirstOrDefaultAsync(c => c.Id == commentId);
         }
 
+        /// <summary>
+        /// Method to get paginated comments
+        /// </summary>
+        /// <param name="articleId">article id</param>
+        /// <param name="pageIndex">page index</param>
+        /// <param name="pageSize">page size</param>
+        /// <returns>paginated article comments</returns>
         public async Task<PaginatedList<Comment>> GetPaginatedCommentsAsync(int articleId, int pageIndex, int pageSize)
         {
             var query = context.Comments
