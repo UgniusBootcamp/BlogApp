@@ -1,0 +1,40 @@
+﻿@model BlogApp.Data.Dto.Comment.CommentCreateDto
+@using BlogApp.Data.Constants
+
+<div class="mx-auto pt-6 px-6 pb-2 bg-gray-50 rounded-lg shadow-md" x-data="{ content: '' }">
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Leave a comment</h3>
+
+    <form asp-action=@ControllerConstants.CreateComment asp-controller=@ControllerConstants.Comment method="post" class="space-y-4">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="ArticleId" value=@Model.ArticleId/>
+
+        <div>
+            <label asp-for="Content" class="sr-only">Your comment</label>
+            <textarea asp-for="Content"
+                      rows="4"
+                      minlength="1"
+                      class="w-full px-4 py-3 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg"
+                      placeholder="Share your thoughts..."
+                      x-model="content"
+                      x-on:input="$watch('content', value => document.getElementById('hiddenContent').value = value)"></textarea>
+
+            <input type="hidden" id="hiddenContent" name="Content" x-bind:value="content" />
+
+            <div class="flex justify-between mt-1">
+                <span class="text-sm text-gray-500"
+                      x-text="`${content.length}/500`"></span>
+            </div>
+        </div>
+
+        <div class="flex justify-end">
+            <button type="submit"
+                    x-bind:disabled="!content.trim()"
+                    class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg transition-colors duration-200 flex items-center space-x-2 cursor-pointer disabled:bg-indigo-300 disabled:cursor-default">
+                <i class="fa-solid fa-arrow-right"></i>
+                <span>Write</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>

@@ -1,0 +1,111 @@
+﻿@model BlogApp.Data.Dto.Comment.CommentReadDto
+@using BlogApp.Data.Constants
+@using System.Security.Claims
+
+@{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var isCommentator = Model.User.Id == User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+
+    var commentDeleteId = "commentDelete" + Model.Id;
+    var commentDeleteIdLabel = "commentDeleteLabel" + Model.Id;
+    var title = "Delete Comment";
+    var message = "Are you sure you want to delete this comment?";
+    var confirmUrl = Url.Action(ControllerConstants.DeleteComment, ControllerConstants.Comment, new { articleId = Model.ArticleId, commentId = Model.Id });
+    var delete = "Delete";
+}
+
+@{
+    var deleteModal = new BlogApp.Models.ConfirmationModalViewModel
+            {
+                ModalId = commentDeleteId,
+                ModalIdLabel = commentDeleteIdLabel,
+                Title = title,
+                Message = message,
+                ConfirmUrl = confirmUrl!
+            };
+}
+
+<div class="my-6 p-6 bg-gray-50 rounded-lg">
+    <div class="flex justify-between">
+        <div class="flex space-x-4">
+            <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-bold">
+                @Model.User.Name.Substring(0, 1)@Model.User.Surname.Substring(0, 1)
+            </div>
+               
+            <div>
+                <p class="font-medium text-gray-900">
+                    @Model.User.Name @Model.User.Surname
+                    <span class="text-gray-500 font-normal">@@@Model.User.UserName</span>
+                </p>
+                <p class="text-sm text-gray-500">
+                    @Model.CreatedAt.ToString("MMMM dd, yyyy")
+                </p>
+            </div>
+        </div>
+        <div>
+            @if (isCommentator)
+            {
+                <div class="flex space-x-4">
+                    <button type="button"
+                            onclick="enableCommentEdit('@Model.Id')"
+                            class="text-blue-500 hover:text-blue-700 transition-colors duration-200 text-sm font-medium cursor-pointer">
+                        Edit
+                    </button>
+                    <button type="submit"
+                            onclick="openModal('@commentDeleteId')"
+                            class="text-rose-500 hover:text-rose-700 transition-colors duration-200 text-sm font-medium cursor-pointer">
+                        @delete
+                    </button>
+                </div>
+                @await Html.PartialAsync("ConfirmationModal", deleteModal)
+            }
+        </div>
+      
+    </div>
+
+    <div id="comment-content-@Model.Id" class="text-gray-600 pt-4">
+        @Html.Raw(Model.Content)
+    </div>
+       
+    <form id="comment-edit-form-@Model.Id"
+          class="comment-edit-form hidden pt-4"
+          data-comment-id="@Model.Id"
+          x-data="{ content: '@Html.Raw(Model.Content)' }">
+        <textarea asp-for="Content"
+                  rows="4"
+                  minlength="1"
+                  class="w-full px-4 py-3 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg"
+                  placeholder="Share your thoughts..."
+                  x-model="content"
+                  x-on:input="$watch('content', value => document.getElementById('hiddenContent-@Model.Id').value = value)"></textarea>
+
+        <input type="hidden"
+               id="hiddenContent-@Model.Id"
+               name="Content"
+               x-bind:value="content" />
+
+        <div class="flex justify-between mt-1">
+            <span class="text-sm text-gray-500"
+                  x-text="`${content.length}/500`"></span>
+        </div>
+
+        <input type="hidden" name="CommentId" value="@Model.Id" />
+        @Html.AntiForgeryToken()
+
+        <div class="flex justify-end space-x-2 mt-2">
+            <button type="button"
+                    onclick="cancelCommentEdit('@Model.Id')"
+                    class="px-6 py-2 bg-gray-500 hover:bg-gray-400 text-white font-medium rounded-lg transition-colors duration-200 flex items-center space-x-2 cursor-pointer disabled:bg-indigo-300 disabled:cursor-default">
+                Cancel
+            </button>
+            <button type="submit"
+                    x-bind:disabled="!content.trim()"
+                    class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg transition-colors duration-200 flex items-center space-x-2 cursor-pointer disabled:bg-indigo-300 disabled:cursor-default">
+                Save
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="~/js/commentUpdate.js"></script>

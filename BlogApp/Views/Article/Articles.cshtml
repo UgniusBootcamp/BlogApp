@@ -8,6 +8,9 @@
     ViewData["Title"] = title;
 
     var articlesList = Model.Items;
+
+    var articleCard = ControllerConstants._ArticleCard;
+    var pagination = ControllerConstants._Pagination;
 }
 
 <div class="container mx-auto px-4 py-8 ">
@@ -22,8 +25,8 @@
     <div class="grid w-full">
         @foreach (var article in articlesList)
         {
-            @await Html.PartialAsync("_ArticleCard", article)
+            @await Html.PartialAsync(articleCard, article)
         }
     </div>
-    @await Html.PartialAsync("_Pagination", Model)
+    @await Html.PartialAsync(pagination, Model)
 </div>

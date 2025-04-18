@@ -23,5 +23,6 @@ namespace BlogApp.Data.Entities
         public User User { get; set; } = null!;
 
         public ICollection<ArticleVote> ArticleVotes { get; set; } = [];
+        public ICollection<Comment> Comments { get; set; } = [];
     }
 }

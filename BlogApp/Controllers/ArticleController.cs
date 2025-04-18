@@ -12,6 +12,7 @@ namespace BlogApp.Controllers
     public class ArticleController(
         IArticleService articleService,
         IArticleVoteService articleVoteService,
+        ICommentService commentService,
         IMapper mapper
         ) : Controller
     {
@@ -31,12 +32,13 @@ namespace BlogApp.Controllers
         }
 
         [HttpGet(ControllerConstants.Article)]
-        public async Task<IActionResult> Article(int id)
+        public async Task<IActionResult> Article(int id, int pageIndex = 1, int pageSize = 10)
         {
             var article = await articleService.GetArticleAsync(id);
 
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             article.Vote = await articleVoteService.GetArticleVotesAsync(article.Id, userId);
+            article.PaginatedComments = await commentService.GetArticleCommentsAsync(id, pageIndex, pageSize);
 
             return View(article);
         }

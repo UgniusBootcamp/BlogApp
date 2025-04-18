@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogApp.Data.Migrations
 {
     [DbContext(typeof(BlogAppDbContext))]
-    [Migration("20250411082116_article")]
-    partial class article
+    [Migration("20250417142926_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,62 @@ namespace BlogApp.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("BlogApp.Data.Entities.ArticleVote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("VoteValue")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("ArticleId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("ArticleVotes");
+                });
+
+            modelBuilder.Entity("BlogApp.Data.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("BlogApp.Data.Entities.RoleRequest", b =>
@@ -288,6 +344,44 @@ namespace BlogApp.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BlogApp.Data.Entities.ArticleVote", b =>
+                {
+                    b.HasOne("BlogApp.Data.Entities.Article", "Article")
+                        .WithMany("ArticleVotes")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlogApp.Data.Entities.User", "User")
+                        .WithMany("ArticleVotes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BlogApp.Data.Entities.Comment", b =>
+                {
+                    b.HasOne("BlogApp.Data.Entities.Article", "Article")
+                        .WithMany("Comments")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlogApp.Data.Entities.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BlogApp.Data.Entities.RoleRequest", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "Role")
@@ -358,9 +452,20 @@ namespace BlogApp.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BlogApp.Data.Entities.Article", b =>
+                {
+                    b.Navigation("ArticleVotes");
+
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("BlogApp.Data.Entities.User", b =>
                 {
+                    b.Navigation("ArticleVotes");
+
                     b.Navigation("Articles");
+
+                    b.Navigation("Comments");
 
                     b.Navigation("RoleRequests");
                 });
