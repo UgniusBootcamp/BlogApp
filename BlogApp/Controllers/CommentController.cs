@@ -40,14 +40,14 @@ namespace BlogApp.Controllers
 
         [HttpPost(ControllerConstants.DeleteComment)]
         [Authorize(Roles = UserRoles.Commentator)]
-        public async Task<IActionResult> DeleteComment(DeleteCommentDto deleteCommentDto)
+        public async Task<IActionResult> DeleteComment(int articleId, int commentId)
         {
             string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value!;
 
-            await commentService.DeleteCommentAsync(userId, deleteCommentDto.ArticleId);
+            await commentService.DeleteCommentAsync(userId, commentId);
             TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.CommentDeleted;
 
-            return RedirectToAction(ControllerConstants.Article, ControllerConstants.Article, new { id = deleteCommentDto.ArticleId, pageIndex = deleteCommentDto.PageIndex, pageSize = deleteCommentDto.PageSize });
+            return RedirectToAction(ControllerConstants.Article, ControllerConstants.Article, new { id = articleId });
         }
 
     }

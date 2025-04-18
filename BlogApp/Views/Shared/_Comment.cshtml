@@ -1,6 +1,30 @@
 ﻿@model BlogApp.Data.Dto.Comment.CommentReadDto
-
 @using BlogApp.Data.Constants
+@using System.Security.Claims
+
+@{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var isCommentator = Model.User.Id == User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+
+    var commentDeleteId = "commentDelete" + Model.Id;
+    var commentDeleteIdLabel = "commentDeleteLabel" + Model.Id;
+    var title = "Delete Comment";
+    var message = "Are you sure you want to delete this comment?";
+    var confirmUrl = Url.Action(ControllerConstants.DeleteComment, ControllerConstants.Comment, new { articleId = Model.ArticleId, commentId = Model.Id });
+    var delete = "Delete";
+}
+
+@{
+    var deleteModal = new BlogApp.Models.ConfirmationModalViewModel
+            {
+                ModalId = commentDeleteId,
+                ModalIdLabel = commentDeleteIdLabel,
+                Title = title,
+                Message = message,
+                ConfirmUrl = confirmUrl!
+            };
+}
 
 <div class="my-6 p-6 bg-gray-50 rounded-lg">
     <div class="flex justify-between">
@@ -8,6 +32,7 @@
             <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-bold">
                 @Model.User.Name.Substring(0, 1)@Model.User.Surname.Substring(0, 1)
             </div>
+               
             <div>
                 <p class="font-medium text-gray-900">
                     @Model.User.Name @Model.User.Surname
@@ -18,9 +43,21 @@
                 </p>
             </div>
         </div>
+        <div>
+            @if (isCommentator)
+            {
+                <button type="submit"
+                        onclick="openModal('@commentDeleteId')"
+                        class="text-rose-500 hover:text-rose-700 transition-colors duration-200 text-sm font-medium cursor-pointer">
+                    @delete
+                </button>
+                @await Html.PartialAsync("ConfirmationModal", deleteModal)
+            }
+        </div>
+      
     </div>
 
         <div class="text-gray-600 pt-4">
                 @Html.Raw(Model.Content)
-            </div>
+        </div>
 </div>
