@@ -50,23 +50,58 @@ namespace BlogApp.Data.Migrations
 
             modelBuilder.Entity("BlogApp.Data.Entities.ArticleVote", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("ArticleId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("VoteValue")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ArticleId", "UserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("ArticleId", "UserId")
+                        .IsUnique();
+
                     b.ToTable("ArticleVotes");
+                });
+
+            modelBuilder.Entity("BlogApp.Data.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("BlogApp.Data.Entities.RoleRequest", b =>
@@ -325,6 +360,25 @@ namespace BlogApp.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BlogApp.Data.Entities.Comment", b =>
+                {
+                    b.HasOne("BlogApp.Data.Entities.Article", "Article")
+                        .WithMany("Comments")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlogApp.Data.Entities.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BlogApp.Data.Entities.RoleRequest", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "Role")
@@ -398,6 +452,8 @@ namespace BlogApp.Data.Migrations
             modelBuilder.Entity("BlogApp.Data.Entities.Article", b =>
                 {
                     b.Navigation("ArticleVotes");
+
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("BlogApp.Data.Entities.User", b =>
@@ -405,6 +461,8 @@ namespace BlogApp.Data.Migrations
                     b.Navigation("ArticleVotes");
 
                     b.Navigation("Articles");
+
+                    b.Navigation("Comments");
 
                     b.Navigation("RoleRequests");
                 });
