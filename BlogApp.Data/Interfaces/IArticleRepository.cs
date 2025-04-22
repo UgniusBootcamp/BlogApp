@@ -6,7 +6,7 @@ namespace BlogApp.Data.Interfaces
     public interface IArticleRepository
     {
         Task<PaginatedList<Article>> GetArticlesAsync(int pageIndex, int pageSize, string? userId = null);
-        Task<IEnumerable<Article>> GetArticlesAsync(string searchString, int count);
+        Task<IEnumerable<Article>> GetArticlesAsync(string? searchString, int count);
         Task<Article?> GetArticleAsync(int id);
         Task CreateArticleAsync(Article article);
         Task UpdateArticleAsync(Article article);

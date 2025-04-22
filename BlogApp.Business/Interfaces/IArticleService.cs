@@ -14,7 +14,7 @@ namespace BlogApp.Business.Interfaces
         /// <returns>paginated list of articles</returns>
         public Task<PaginatedList<ArticleListDto>> GetArticlesAsync(int pageIndex, int pageSize, string? userId = null);
 
-        public Task<IEnumerable<ArticleListDto>> GetArticlesAsync(string searchString, int count);
+        public Task<IEnumerable<ArticleTagDto>> GetArticleTagsAsync(string? searchString, int count);
 
         /// <summary>
         /// Method to get article by id

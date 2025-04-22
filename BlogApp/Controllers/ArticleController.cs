@@ -125,11 +125,14 @@ namespace BlogApp.Controllers
         }
 
         [HttpGet(ControllerConstants.ArticleSearch)]
-        public async Task<IActionResult> ArticleSearch(string searchString, int count = 5)
+        public async Task<IActionResult> ArticleSearch(string? searchString, int count = 5)
         {
-            var articles = await articleService.GetArticlesAsync(searchString, count);
+            if(string.IsNullOrEmpty(searchString))
+                return PartialView(ControllerConstants._ArticleSearch, new List<ArticleTagDto>());
 
-            return PartialView(articles);
+            var articles = await articleService.GetArticleTagsAsync(searchString, count);
+
+            return PartialView(ControllerConstants._ArticleSearch, articles);
         }
     }
 }

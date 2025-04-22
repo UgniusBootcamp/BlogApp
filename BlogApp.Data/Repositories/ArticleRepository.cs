@@ -48,12 +48,21 @@ namespace BlogApp.Data.Repositories
             return new PaginatedList<Article>(items, pageIndex, totalPages);
         }
 
-        public async Task<IEnumerable<Article>> GetArticlesAsync(string searchString, int count)
+        public async Task<IEnumerable<Article>> GetArticlesAsync(string? searchString, int count)
         {
-            return await context.Articles
+
+            var query = context.Articles
                 .Include(a => a.User)
-                .Where(a => a.Title.Contains(searchString))
                 .OrderByDescending(a => a.CreatedAt)
+                .AsQueryable();
+
+            if(!string.IsNullOrEmpty(searchString))
+            {
+                var search = searchString.ToLower();
+                query = query.Where(a => a.Title.ToLower().Contains(search));
+            }
+
+            return await query
                 .Take(count)
                 .ToListAsync();
         }

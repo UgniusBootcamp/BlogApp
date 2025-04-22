@@ -80,5 +80,6 @@ namespace BlogApp.Data.Constants
         public const string _LastArticle = "_LastArticle";
         public const string _TopArticle = "_TopArticle";
         public const string _LastCommentedArticle = "_LastCommentedArticle";
+        public const string _ArticleSearch = "_ArticleSearch";
     }
 }

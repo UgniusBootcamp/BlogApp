@@ -1,0 +1,30 @@
+﻿@model List<BlogApp.Data.Dto.Article.ArticleTagDto>
+@using BlogApp.Data.Constants
+
+<div id="result" class="absolute z-10 w-96 bg-gray-100 rounded-lg">
+    @foreach (var item in Model)
+    {
+        <div id="@item.Id">
+            <a asp-action=@ControllerConstants.Article asp-controller=@ControllerConstants.Article asp-route-id=@item.Id
+               class="block group p-4 m-1 rounded-lg border border-gray-100 hover:border-primary-300 transition-all duration-200 hover:shadow-md">
+                <div class="flex items-start space-x-4">
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <div class="flex-shrink-0 w-20 h-20 rounded-md overflow-hidden">
+                            <img src="@item.ImageUrl" alt="@item.Title" class="w-full h-full object-cover" />
+                        </div>
+                    }
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-lg font-medium text-gray-900 group-hover:text-primary-600 transition-colors truncate">@item.Title</h3>
+                        <div class="mt-2 flex items-center text-sm text-gray-500">
+                            <span class="truncate">@item.User.Name @item.User.Surname</span>
+                            <span class="mx-1">·</span>
+                            <time datetime="@item.CreatedAt.ToString("yyyy-MM-dd")">@item.CreatedAt.ToString("MMM d, yyyy")</time>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+

@@ -89,11 +89,11 @@ namespace BlogApp.Business.Services
             return new PaginatedList<ArticleListDto>(mapper.Map<List<ArticleListDto>>(articles.Items), articles.PageIndex, articles.TotalPages);
         }
 
-        public async Task<IEnumerable<ArticleListDto>> GetArticlesAsync(string searchString, int count)
+        public async Task<IEnumerable<ArticleTagDto>> GetArticleTagsAsync(string? searchString, int count)
         {
             var articles = await articleRepository.GetArticlesAsync(searchString, count);
 
-            return mapper.Map<List<ArticleListDto>>(articles);
+            return mapper.Map<IEnumerable<ArticleTagDto>>(articles);
         }
 
         public async Task<IEnumerable<ArticleListDto>> GetTopArticlesAsync(int count)
