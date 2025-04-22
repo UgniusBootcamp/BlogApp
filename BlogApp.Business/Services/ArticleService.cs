@@ -12,6 +12,8 @@ namespace BlogApp.Business.Services
     public class ArticleService(
         IArticleRepository articleRepository,
         IBlobService blobService,
+        ICommentService commentService,
+        IArticleVoteService articleVoteService,
         IMapper mapper
         ) : IArticleService
     {
@@ -85,6 +87,44 @@ namespace BlogApp.Business.Services
             var articles = await articleRepository.GetArticlesAsync(pageIndex, pageSize, userId);
 
             return new PaginatedList<ArticleListDto>(mapper.Map<List<ArticleListDto>>(articles.Items), articles.PageIndex, articles.TotalPages);
+        }
+
+        public async Task<IEnumerable<ArticleListDto>> GetArticlesAsync(string searchString, int count)
+        {
+            var articles = await articleRepository.GetArticlesAsync(searchString, count);
+
+            return mapper.Map<List<ArticleListDto>>(articles);
+        }
+
+        public async Task<IEnumerable<ArticleListDto>> GetTopArticlesAsync(int count)
+        {
+            var articles = await articleRepository.GetTopArticlesAsync(count);
+
+            var mapped = mapper.Map<List<ArticleListDto>>(articles);
+
+            foreach (var article in mapped)
+                article.Vote = await articleVoteService.GetArticleVotesAsync(article.Id, null);
+
+            return mapped;
+        }
+
+        public async Task<IEnumerable<ArticleListDto>> LastArticlesAsync(int count)
+        {
+            var articles = await articleRepository.LastArticlesAsync(count);
+
+            return mapper.Map<List<ArticleListDto>>(articles);
+        }
+
+        public async Task<IEnumerable<ArticleWithCommentDto>> LastCommentedArticlesAsync(int count)
+        {
+            var articles = await articleRepository.LastCommentedArticlesAsync(count);
+
+            var mapped = mapper.Map<IEnumerable<ArticleWithCommentDto>>(articles);
+
+            foreach (var article in mapped)
+                article.LastComment = await commentService.GetLastArticleCommentByIdAsync(article.Id);
+
+            return mapped.Where(a => a.LastComment != null);
         }
 
         /// <summary>

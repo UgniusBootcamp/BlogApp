@@ -40,6 +40,7 @@ namespace BlogApp.Data.Helpers.Mapper
             CreateMap<ArticleCreateDto, Article>();
             CreateMap<ArticleUpdateDto, Article>();
             CreateMap<ArticleDetailDto, ArticleUpdateDto>();
+            CreateMap<Article, ArticleWithCommentDto>();
 
             //ArticleVote
             CreateMap<ArticleVoteCreateDto, ArticleVote>();

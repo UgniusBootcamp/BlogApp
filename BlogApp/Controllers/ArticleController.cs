@@ -123,5 +123,13 @@ namespace BlogApp.Controllers
 
             return RedirectToAction(ControllerConstants.MyArticles);
         }
+
+        [HttpGet(ControllerConstants.ArticleSearch)]
+        public async Task<IActionResult> ArticleSearch(string searchString, int count = 5)
+        {
+            var articles = await articleService.GetArticlesAsync(searchString, count);
+
+            return PartialView(articles);
+        }
     }
 }

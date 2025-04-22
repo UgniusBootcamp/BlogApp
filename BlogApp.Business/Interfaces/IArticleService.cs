@@ -14,6 +14,8 @@ namespace BlogApp.Business.Interfaces
         /// <returns>paginated list of articles</returns>
         public Task<PaginatedList<ArticleListDto>> GetArticlesAsync(int pageIndex, int pageSize, string? userId = null);
 
+        public Task<IEnumerable<ArticleListDto>> GetArticlesAsync(string searchString, int count);
+
         /// <summary>
         /// Method to get article by id
         /// </summary>
@@ -41,5 +43,8 @@ namespace BlogApp.Business.Interfaces
         /// <param name="userId">user id</param>
         /// <param name="id">article id</param>
         public Task DeleteArticleAsync(string userId, int id);
+        public Task<IEnumerable<ArticleListDto>> GetTopArticlesAsync(int count);
+        public Task<IEnumerable<ArticleListDto>> LastArticlesAsync(int count);
+        public Task<IEnumerable<ArticleWithCommentDto>> LastCommentedArticlesAsync(int count);
     }
 }
