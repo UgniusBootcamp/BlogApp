@@ -8,6 +8,11 @@ namespace BlogApp.Data.Repositories
 {
     public class RoleRequestRepository(BlogAppDbContext context) : IRoleRequestRepository
     {
+        /// <summary>
+        /// Method to create role request
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <param name="roleId">role id</param>
         public async Task CreateRoleRequestAsync(string userId, string roleId)
         {
             await context.RoleRequests.AddAsync(new RoleRequest
@@ -19,6 +24,11 @@ namespace BlogApp.Data.Repositories
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Method to delete role request
+        /// </summary>
+        /// <param name="roleRequestId"></param>
+        /// <returns></returns>
         public async Task DeleteRoleRequestAsync(int roleRequestId)
         {
             await context.RoleRequests
@@ -28,6 +38,11 @@ namespace BlogApp.Data.Repositories
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Method to get role request
+        /// </summary>
+        /// <param name="roleRequestId">role request id</param>
+        /// <returns>role request</returns>
         public async Task<RoleRequest?> GetRoleRequestAsync(int roleRequestId)
         {
             return await context.RoleRequests
@@ -36,6 +51,11 @@ namespace BlogApp.Data.Repositories
                  .FirstOrDefaultAsync(r => r.Id == roleRequestId);
         }
 
+        /// <summary>
+        /// Metrhod to get user roles requests
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <returns>user role requests</returns>
         public async Task<IEnumerable<RoleRequest>> GetRoleRequestsAsync(string userId)
         {
             return await context.RoleRequests
@@ -45,6 +65,13 @@ namespace BlogApp.Data.Repositories
                .ToListAsync();
         }
 
+        /// <summary>
+        /// Method to get paginated role requests   
+        /// </summary>
+        /// <param name="query">query</param>
+        /// <param name="pageIndex">page index</param>
+        /// <param name="pageSize">page size</param>
+        /// <returns>paginated role requests</returns>
         public async Task<PaginatedList<RoleRequest>> GetRoleRequestsAsync(string? query, int pageIndex, int pageSize)
         {
             var roleRequests = context.RoleRequests

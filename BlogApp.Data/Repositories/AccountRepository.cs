@@ -170,6 +170,12 @@ namespace BlogApp.Data.Repositories
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Method to add user to role
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <param name="roleId">role id</param>
+        /// <exception cref="NotFoundException">if user or role not found</exception>
         public async Task AddUserToRole(string userId, string roleId)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -183,6 +189,11 @@ namespace BlogApp.Data.Repositories
             await userManager.AddToRoleAsync(user, role.Name!);
         }
 
+        /// <summary>
+        /// Method to get role by id
+        /// </summary>
+        /// <param name="roleId">role by id</param>
+        /// <returns>role</returns>
         public async Task<IdentityRole?> GetRoleByIdAsync(string roleId)
         {
             return await roleManager.FindByIdAsync(roleId);

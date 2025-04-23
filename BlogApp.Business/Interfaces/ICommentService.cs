@@ -42,6 +42,11 @@ namespace BlogApp.Business.Interfaces
         /// <returns>comment</returns>
         public Task<CommentReadDto> GetCommentByIdAsync(int commentId);
 
+        /// <summary>
+        /// Method to get last comment of article
+        /// </summary>
+        /// <param name="articleId">article id</param>
+        /// <returns>last article comment</returns>
         public Task<CommentReadDto?> GetLastArticleCommentByIdAsync(int articleId);
     }
 }

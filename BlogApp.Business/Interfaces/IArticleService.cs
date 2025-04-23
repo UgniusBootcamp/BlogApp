@@ -43,8 +43,26 @@ namespace BlogApp.Business.Interfaces
         /// <param name="userId">user id</param>
         /// <param name="id">article id</param>
         public Task DeleteArticleAsync(string userId, int id);
+
+        /// <summary>
+        /// Method to get top rated articles
+        /// </summary>
+        /// <param name="count">count</param>
+        /// <returns>list of top rated articles</returns>
         public Task<IEnumerable<ArticleListDto>> GetTopArticlesAsync(int count);
+
+        /// <summary>
+        /// Method to get new articles
+        /// </summary>
+        /// <param name="count">count</param>
+        /// <returns>list of new articles</returns>
         public Task<IEnumerable<ArticleListDto>> LastArticlesAsync(int count);
+
+        /// <summary>
+        /// Method to get last commented articles
+        /// </summary>
+        /// <param name="count">count</param>
+        /// <returns>last commented articles</returns>
         public Task<IEnumerable<ArticleWithCommentDto>> LastCommentedArticlesAsync(int count);
     }
 }

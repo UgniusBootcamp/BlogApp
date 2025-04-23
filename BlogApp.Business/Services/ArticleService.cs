@@ -89,6 +89,12 @@ namespace BlogApp.Business.Services
             return new PaginatedList<ArticleListDto>(mapper.Map<List<ArticleListDto>>(articles.Items), articles.PageIndex, articles.TotalPages);
         }
 
+        /// <summary>
+        /// Get artcile search tags
+        /// </summary>
+        /// <param name="searchString">search string</param>
+        /// <param name="count">count</param>
+        /// <returns>articles</returns>
         public async Task<IEnumerable<ArticleTagDto>> GetArticleTagsAsync(string? searchString, int count)
         {
             var articles = await articleRepository.GetArticlesAsync(searchString, count);
@@ -96,6 +102,11 @@ namespace BlogApp.Business.Services
             return mapper.Map<IEnumerable<ArticleTagDto>>(articles);
         }
 
+        /// <summary>
+        /// Method to get top rated articles
+        /// </summary>
+        /// <param name="count">count</param>
+        /// <returns>list of top rated articles</returns>
         public async Task<IEnumerable<ArticleListDto>> GetTopArticlesAsync(int count)
         {
             var articles = await articleRepository.GetTopArticlesAsync(count);
@@ -108,6 +119,11 @@ namespace BlogApp.Business.Services
             return mapped;
         }
 
+        /// <summary>
+        /// Method to get new articles
+        /// </summary>
+        /// <param name="count">count</param>
+        /// <returns>newest articles</returns>
         public async Task<IEnumerable<ArticleListDto>> LastArticlesAsync(int count)
         {
             var articles = await articleRepository.LastArticlesAsync(count);
@@ -115,6 +131,11 @@ namespace BlogApp.Business.Services
             return mapper.Map<List<ArticleListDto>>(articles);
         }
 
+        /// <summary>
+        /// Method to get last commented articles
+        /// </summary>
+        /// <param name="count">count</param>
+        /// <returns>list of last commented articles</returns>
         public async Task<IEnumerable<ArticleWithCommentDto>> LastCommentedArticlesAsync(int count)
         {
             var articles = await articleRepository.LastCommentedArticlesAsync(count);
