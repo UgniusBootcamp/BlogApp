@@ -73,5 +73,13 @@ namespace BlogApp.Data.Constants
         public const string CommentDeleted = "Comment has been deleted";
         public const string _Pagination = "_Pagination";
         public const string _ArticleCard = "_ArticleCard";
+        public const int TopArticlesCount = 3;
+        public const int LastArticlesCount = 5;
+        public const int LastCommentedArticlesCount = 3;
+        public const string ArticleSearch = "ArticleSearch";
+        public const string _LastArticle = "_LastArticle";
+        public const string _TopArticle = "_TopArticle";
+        public const string _LastCommentedArticle = "_LastCommentedArticle";
+        public const string _ArticleSearch = "_ArticleSearch";
     }
 }

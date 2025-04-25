@@ -38,5 +38,6 @@ namespace BlogApp.Data.Interfaces
         /// <param name="commentId">comment id</param>
         /// <returns>comment by id</returns>
         public Task<Comment?> GetCommentByIdAsync(int commentId);
+        public Task<Comment?> GetLastArticleCommentByIdAsync(int articleId);
     }
 }

@@ -1,8 +1,76 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model ArticleSummaryViewModel
+@using BlogApp.Data.Constants
+@using BlogApp.Data.Dto.Article
+
+@{
+    var title = "Home Page";
+    ViewData["Title"] = title;
+
+    var lastArticles = "New Articles";
+    var topVotedArticles = "Top Voted Articles";
+    var lastCommentedArticles = "Last Commented Articles";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mx-auto px-4 py-8 ">
+    <header class="mb-8">
+        <div class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-800 tracking-tight relative inline-block">
+                @title
+                <span class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></span>
+            </h1>
+            <div>
+                <div class="relative mb-6">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <input id="livesearch" name="livesearch" placeholder="Search articles..." autocomplete="off"
+                           class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition duration-150 ease-in-out" />
+                </div>
+
+                @await Html.PartialAsync(ControllerConstants._ArticleSearch, new List<ArticleTagDto>())
+            </div>
+           
+        </div>
+    </header>
+
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 tracking-tight relative inline-block mb-2">
+            @lastArticles
+        </h2>
+        <div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 w-full gap-4">
+            @foreach (var article in Model.LastArticles)
+            {
+                @await Html.PartialAsync(ControllerConstants._LastArticle, article)
+            }
+        </div>
+    </div>
+
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 tracking-tight relative inline-block mb-2">
+            @topVotedArticles
+        </h2>
+        <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 w-full gap-4">
+            @foreach (var article in Model.TopVotedArticles)
+            {
+                @await Html.PartialAsync(ControllerConstants._TopArticle, article)
+            }
+        </div>
+    </div>
+
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold text-gray-800 tracking-tight relative inline-block mb-2">
+            @lastCommentedArticles
+        </h2>
+        <div class="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 w-full gap-4">
+            @foreach (var article in Model.LastCommentedArticles)
+            {
+                @await Html.PartialAsync(ControllerConstants._LastCommentedArticle, article)
+            }
+        </div>
+    </div>
+    
 </div>
+
+<script src="~/js//index.js"></script>

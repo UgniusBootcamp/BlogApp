@@ -1,0 +1,47 @@
+﻿@using BlogApp.Data.Constants
+@model BlogApp.Data.Dto.Article.ArticleListDto
+
+@{
+    var readMore = "Read More";
+}
+
+<div class="w-full bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 ease-in-out flex flex-col group">
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <div class="overflow-hidden rounded-lg">
+            <img src="@Model.ImageUrl" alt="@Model.Title"
+                 class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105" />
+        </div>
+    }
+
+    <div class="p-5 flex flex-col flex-grow">
+        <div class="mb-4">
+            <h2 class="text-lg font-semibold text-gray-900 line-clamp-2 group-hover:text-primary-600 transition-colors duration-200">
+                @Model.Title
+            </h2>
+        </div>
+
+        <div class="mt-auto">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="flex flex-col">
+                    <span class="text-sm font-medium text-gray-800">
+                        @Model.User.Name @Model.User.Surname
+                        <span class="text-xs text-gray-500">@@@Model.User.UserName</span>
+                    </span>
+                    <span class="text-xs text-gray-400">
+                        @Model.CreatedAt.ToString("MMMM dd, yyyy")
+                    </span>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-gray-100 flex justify-end">
+                <a asp-action=@ControllerConstants.Article asp-controller=@ControllerConstants.Article asp-route-id=@Model.Id
+                   class="px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 text-white text-sm font-medium rounded-lg hover:from-primary-600 hover:to-primary-700 transition-all duration-200 shadow-sm hover:shadow-md">
+                    @readMore
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+

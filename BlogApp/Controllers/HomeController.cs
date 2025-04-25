@@ -1,15 +1,26 @@
 using System.Diagnostics;
+using BlogApp.Business.Interfaces;
+using BlogApp.Data.Constants;
 using BlogApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(
+        IArticleService articleService
+        ) : Controller
     {
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var viewModel = new ArticleSummaryViewModel
+            {
+                LastArticles = await articleService.LastArticlesAsync(ControllerConstants.LastArticlesCount),
+                TopVotedArticles = await articleService.GetTopArticlesAsync(ControllerConstants.TopArticlesCount),
+                LastCommentedArticles = await articleService.LastCommentedArticlesAsync(ControllerConstants.LastCommentedArticlesCount)
+            };
+
+            return View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

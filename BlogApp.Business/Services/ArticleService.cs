@@ -12,6 +12,8 @@ namespace BlogApp.Business.Services
     public class ArticleService(
         IArticleRepository articleRepository,
         IBlobService blobService,
+        ICommentService commentService,
+        IArticleVoteService articleVoteService,
         IMapper mapper
         ) : IArticleService
     {
@@ -85,6 +87,65 @@ namespace BlogApp.Business.Services
             var articles = await articleRepository.GetArticlesAsync(pageIndex, pageSize, userId);
 
             return new PaginatedList<ArticleListDto>(mapper.Map<List<ArticleListDto>>(articles.Items), articles.PageIndex, articles.TotalPages);
+        }
+
+        /// <summary>
+        /// Get artcile search tags
+        /// </summary>
+        /// <param name="searchString">search string</param>
+        /// <param name="count">count</param>
+        /// <returns>articles</returns>
+        public async Task<IEnumerable<ArticleTagDto>> GetArticleTagsAsync(string? searchString, int count)
+        {
+            var articles = await articleRepository.GetArticlesAsync(searchString, count);
+
+            return mapper.Map<IEnumerable<ArticleTagDto>>(articles);
+        }
+
+        /// <summary>
+        /// Method to get top rated articles
+        /// </summary>
+        /// <param name="count">count</param>
+        /// <returns>list of top rated articles</returns>
+        public async Task<IEnumerable<ArticleListDto>> GetTopArticlesAsync(int count)
+        {
+            var articles = await articleRepository.GetTopArticlesAsync(count);
+
+            var mapped = mapper.Map<List<ArticleListDto>>(articles);
+
+            foreach (var article in mapped)
+                article.Vote = await articleVoteService.GetArticleVotesAsync(article.Id, null);
+
+            return mapped;
+        }
+
+        /// <summary>
+        /// Method to get new articles
+        /// </summary>
+        /// <param name="count">count</param>
+        /// <returns>newest articles</returns>
+        public async Task<IEnumerable<ArticleListDto>> LastArticlesAsync(int count)
+        {
+            var articles = await articleRepository.LastArticlesAsync(count);
+
+            return mapper.Map<List<ArticleListDto>>(articles);
+        }
+
+        /// <summary>
+        /// Method to get last commented articles
+        /// </summary>
+        /// <param name="count">count</param>
+        /// <returns>list of last commented articles</returns>
+        public async Task<IEnumerable<ArticleWithCommentDto>> LastCommentedArticlesAsync(int count)
+        {
+            var articles = await articleRepository.LastCommentedArticlesAsync(count);
+
+            var mapped = mapper.Map<IEnumerable<ArticleWithCommentDto>>(articles);
+
+            foreach (var article in mapped)
+                article.LastComment = await commentService.GetLastArticleCommentByIdAsync(article.Id);
+
+            return mapped.Where(a => a.LastComment != null);
         }
 
         /// <summary>

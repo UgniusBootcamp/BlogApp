@@ -50,6 +50,15 @@ namespace BlogApp.Data.Repositories
                 .FirstOrDefaultAsync(c => c.Id == commentId);
         }
 
+        public async Task<Comment?> GetLastArticleCommentByIdAsync(int articleId)
+        {
+            return await context.Comments
+                .Where(c => c.ArticleId == articleId)
+                .OrderByDescending(c => c.CreatedAt)
+                .Include(c => c.User)
+                .FirstOrDefaultAsync();
+        }
+
         /// <summary>
         /// Method to get paginated comments
         /// </summary>

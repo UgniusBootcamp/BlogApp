@@ -102,5 +102,17 @@ namespace BlogApp.Business.Services
 
             return mapper.Map<CommentReadDto>(comment);
         }
+
+        /// <summary>
+        /// Method to get last article comment
+        /// </summary>
+        /// <param name="articleId">article id</param>
+        /// <returns>last article commment</returns>
+        public async Task<CommentReadDto?> GetLastArticleCommentByIdAsync(int articleId)
+        {
+            var comment = await commentRepository.GetLastArticleCommentByIdAsync(articleId);
+
+            return mapper.Map<CommentReadDto>(comment);
+        }
     }
 }
