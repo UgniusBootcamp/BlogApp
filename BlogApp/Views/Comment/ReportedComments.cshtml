@@ -1,0 +1,25 @@
+﻿@model BlogApp.Data.Helpers.Mapper.PaginatedList<BlogApp.Data.Dto.Comment.ReportedCommentDto>
+
+@{
+    var title = "Reported Comments";
+    ViewData["Title"] = title;
+    var reportedComments = Model.Items;
+}
+
+<div class="container mx-auto p-6 bg-primary-400/50 rounded-lg ">
+    <header class="mb-8">
+        <div class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-gray-800 tracking-tight relative inline-block">
+                @title
+                <span class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></span>
+            </h1>
+        </div>
+    </header>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        @foreach (var comment in reportedComments)
+        {
+            @await Html.PartialAsync("_ReportedComment", comment)
+        }
+    </div>
+    @await Html.PartialAsync("_Pagination", Model)
+</div>

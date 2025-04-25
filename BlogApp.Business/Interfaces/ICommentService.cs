@@ -12,7 +12,7 @@ namespace BlogApp.Business.Interfaces
         /// <param name="pageIndex">page index</param>
         /// <param name="pageSize">page size</param>
         /// <returns>paginated article comments</returns>
-        public Task<PaginatedList<CommentReadDto>> GetArticleCommentsAsync(int articleId, int pageIndex, int pageSize);
+        public Task<PaginatedList<CommentReadDto>> GetArticleCommentsAsync(int articleId, int pageIndex, int pageSize, string? userId = null);
 
         /// <summary>
         /// Method to create comment
@@ -48,5 +48,19 @@ namespace BlogApp.Business.Interfaces
         /// <param name="articleId">article id</param>
         /// <returns>last article comment</returns>
         public Task<CommentReadDto?> GetLastArticleCommentByIdAsync(int articleId);
+
+        /// <summary>
+        /// Method to get paginated reported comments
+        /// </summary>
+        /// <param name="pageIndex">page index</param>
+        /// <param name="pageSize">page size</param>
+        /// <returns>paginated reported commments</returns>
+        Task<PaginatedList<ReportedCommentDto>> GetPaginatedReportedCommentsAsync(int pageIndex, int pageSize);
+
+        /// <summary>
+        /// Method to delete comment
+        /// </summary>
+        /// <param name="commentId">comment id</param>
+        Task DeleteCommentAsync(int commentId);
     }
 }

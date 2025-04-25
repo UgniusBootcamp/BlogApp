@@ -36,5 +36,6 @@
         public const string ArticleNotBelongsToUser = "Article does not belong to user";
         public const string CommentNotFound = "Comment not found";
         public const string CommentNotBelongsToUser = "Comment does not belong to user";
+        public const string ReportCanBeCreatedOnceByUser = "Report can be created once by user";
     }
 }

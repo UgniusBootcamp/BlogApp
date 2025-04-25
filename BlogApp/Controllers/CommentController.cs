@@ -49,5 +49,24 @@ namespace BlogApp.Controllers
             return RedirectToAction(ControllerConstants.Article, ControllerConstants.Article, new { id = articleId });
         }
 
+        [HttpGet(ControllerConstants.ReportedComments)]
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<IActionResult> ReportedComments(int pageIndex = 1, int pageSize = 10)
+        {
+            var reportedComments = await commentService.GetPaginatedReportedCommentsAsync(pageIndex, pageSize);
+
+            return View(reportedComments);
+        }
+
+        [HttpPost(ControllerConstants.DeleteCommentAdmin)]
+        [Authorize(Roles = UserRoles.Admin)]
+        public async Task<IActionResult> DeleteCommentAdmin(int articleId, int commentId)
+        {
+            await commentService.DeleteCommentAsync(commentId);
+
+            TempData[ControllerConstants.SnackbarMessage] = ControllerConstants.CommentDeleted;
+
+            return RedirectToAction(ControllerConstants.ReportedComments);
+        }
     }
 }

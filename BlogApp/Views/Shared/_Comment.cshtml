@@ -1,11 +1,12 @@
 ﻿@model BlogApp.Data.Dto.Comment.CommentReadDto
 @using BlogApp.Data.Constants
 @using System.Security.Claims
+@using BlogApp.Data.Helpers.Roles
 
 @{
-    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-    var isCommentator = Model.User.Id == User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
+    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    var isCommentator = Model.User.Id == userId;
+    var canReport = !Model.IsReported && User.IsInRole(UserRoles.BlogUser) && Model.User.Id != userId;
 
     var commentDeleteId = "commentDelete" + Model.Id;
     var commentDeleteIdLabel = "commentDeleteLabel" + Model.Id;
@@ -13,6 +14,14 @@
     var message = "Are you sure you want to delete this comment?";
     var confirmUrl = Url.Action(ControllerConstants.DeleteComment, ControllerConstants.Comment, new { articleId = Model.ArticleId, commentId = Model.Id });
     var delete = "Delete";
+    var report = "Report";
+    var commentReported = "Comment Reported";
+
+    var commentReportId = "commentReport" + Model.Id;
+    var commentReportIdLabel = "commentReportLabel" + Model.Id;
+    var reportTitle = "Report Comment";
+    var reportMessage = "Are you sure you want to report this comment?";
+    var reportConfirmUrl = Url.Action(ControllerConstants.CreateReport, ControllerConstants.Report, new { articleId = Model.ArticleId, commentId = Model.Id });
 }
 
 @{
@@ -23,6 +32,15 @@
                 Title = title,
                 Message = message,
                 ConfirmUrl = confirmUrl!
+            };
+
+    var reportModal = new BlogApp.Models.ConfirmationModalViewModel
+            {
+                ModalId = commentReportId,
+                ModalIdLabel = commentReportIdLabel,
+                Title = reportTitle,
+                Message = reportMessage,
+                ConfirmUrl = reportConfirmUrl!
             };
 }
 
@@ -44,9 +62,10 @@
             </div>
         </div>
         <div>
+            <div class="flex space-x-4">
             @if (isCommentator)
             {
-                <div class="flex space-x-4">
+
                     <button type="button"
                             onclick="enableCommentEdit('@Model.Id')"
                             class="text-blue-500 hover:text-blue-700 transition-colors duration-200 text-sm font-medium cursor-pointer">
@@ -57,10 +76,26 @@
                             class="text-rose-500 hover:text-rose-700 transition-colors duration-200 text-sm font-medium cursor-pointer">
                         @delete
                     </button>
-                </div>
-                @await Html.PartialAsync("ConfirmationModal", deleteModal)
             }
+                @if (canReport)
+                {
+                    <button type="button"
+                            onclick="openModal('@commentReportId')"
+                            class="text-red-500 hover:text-red-700 transition-colors duration-200 text-sm font-medium cursor-pointer">
+                        @report
+                    </button>
+                }
+                @if(Model.IsReported)
+                {
+                    <span class="text-primary-500 text-xs">
+                        @commentReported
+                    </span>
+                }
+            </div>
+            @await Html.PartialAsync("ConfirmationModal", reportModal)
+            @await Html.PartialAsync("ConfirmationModal", deleteModal)
         </div>
+
       
     </div>
 

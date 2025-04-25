@@ -12,6 +12,7 @@ namespace BlogApp.Data.Data
         public DbSet<Article> Articles { get; set; } = null!;
         public DbSet<ArticleVote> ArticleVotes { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;
+        public DbSet<Report> Reports { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -43,6 +44,15 @@ namespace BlogApp.Data.Data
                 entity.HasOne(c => c.Article).WithMany(a => a.Comments).HasForeignKey(c => c.ArticleId).OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(c => c.User).WithMany(u => u.Comments).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Cascade);
+            });
+
+            builder.Entity<Report>(entity =>
+            {
+                entity.HasIndex(r => new { r.CommentId, r.UserId }).IsUnique();
+
+                entity.HasOne(r => r.Comment).WithMany(c => c.Reports).HasForeignKey(r => r.CommentId).OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(r => r.User).WithMany(u => u.Reports).HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.Cascade);
             });
 
             base.OnModelCreating(builder);

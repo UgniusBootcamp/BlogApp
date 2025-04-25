@@ -17,5 +17,6 @@ namespace BlogApp.Data.Entities
         public ICollection<Article> Articles { get; set; } = [];
         public ICollection<ArticleVote> ArticleVotes { get; set; } = [];
         public ICollection<Comment> Comments { get; set; } = [];
+        public ICollection<Report> Reports { get; set; } = [];
     }
 }

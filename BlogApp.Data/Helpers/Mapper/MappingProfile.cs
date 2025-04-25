@@ -42,6 +42,7 @@ namespace BlogApp.Data.Helpers.Mapper
             CreateMap<ArticleDetailDto, ArticleUpdateDto>();
             CreateMap<Article, ArticleWithCommentDto>();
             CreateMap<Article, ArticleTagDto>();
+            CreateMap<Article, ReportedArticleDto>();
 
             //ArticleVote
             CreateMap<ArticleVoteCreateDto, ArticleVote>();
@@ -51,6 +52,7 @@ namespace BlogApp.Data.Helpers.Mapper
             CreateMap<Comment, CommentReadDto>();
             CreateMap<CommentCreateDto, Comment>();
             CreateMap<CommentEditDto, Comment>();
+            CreateMap<Comment, ReportedCommentDto>();
         }
     }
 }

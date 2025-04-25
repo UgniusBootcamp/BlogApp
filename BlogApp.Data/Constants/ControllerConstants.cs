@@ -81,5 +81,10 @@ namespace BlogApp.Data.Constants
         public const string _TopArticle = "_TopArticle";
         public const string _LastCommentedArticle = "_LastCommentedArticle";
         public const string _ArticleSearch = "_ArticleSearch";
+        public const string CreateReport = "CreateReport";
+        public const string ReportCreated = "Report has been created";
+        public const string Report = "Report";
+        public const string ReportedComments = "ReportedComments";
+        public const string DeleteCommentAdmin = "DeleteCommentAdmin";
     }
 }

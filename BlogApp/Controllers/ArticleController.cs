@@ -38,7 +38,7 @@ namespace BlogApp.Controllers
 
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             article.Vote = await articleVoteService.GetArticleVotesAsync(article.Id, userId);
-            article.PaginatedComments = await commentService.GetArticleCommentsAsync(id, pageIndex, pageSize);
+            article.PaginatedComments = await commentService.GetArticleCommentsAsync(id, pageIndex, pageSize, userId);
 
             return View(article);
         }
