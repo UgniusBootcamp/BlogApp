@@ -9,6 +9,12 @@ namespace BlogApp.Business.Services
 {
     public class ReportService(IReportRepository reportRepository) : IReportService
     {
+        /// <summary>
+        /// Method to create a report for a comment
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <param name="commentId">comment id</param>
+        /// <exception cref="BusinessRuleValidationException">if report for comment exists</exception>
         public async Task CreateReportAsync(string userId, int commentId)
         {
             var exists = await reportRepository.GetReportAsync(commentId, userId);

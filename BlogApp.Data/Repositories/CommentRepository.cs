@@ -85,6 +85,12 @@ namespace BlogApp.Data.Repositories
             return new PaginatedList<Comment>(items, pageIndex, totalPages);
         }
 
+        /// <summary>
+        /// Method to get paginated reported comments
+        /// </summary>
+        /// <param name="pageIndex">page index</param>
+        /// <param name="pageSize">page size</param>
+        /// <returns>paginated reported comments</returns>
         public async Task<PaginatedList<Comment>> GetPaginatedReportedCommentsAsync(int pageIndex, int pageSize)
         {
             var query = context.Comments.Where(c => c.Reports.Count > 0)
