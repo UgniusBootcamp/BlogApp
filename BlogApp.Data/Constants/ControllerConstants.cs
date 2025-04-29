@@ -86,5 +86,15 @@ namespace BlogApp.Data.Constants
         public const string Report = "Report";
         public const string ReportedComments = "ReportedComments";
         public const string DeleteCommentAdmin = "DeleteCommentAdmin";
+        public const string api = "api/";
+        public const string LoginSuccessful = "Login successful";
+        public const string RefreshToken = "RefreshToken";
+        public const string RefreshTokenNotFound = "Refresh token not found";
+        public const string AccessTokenRefreshed = "Access token refreshed";
+        public const string LoginApi = "/Login";
+        public const string AccessTokenApi = "/AccessToken";
+        public const string ArticleDeleted = "Article Deleted";
+        public const string ArticleCreated = "Article Created";
+        public const string ArticleUpdated = "Article Updated";
     }
 }

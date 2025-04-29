@@ -36,14 +36,14 @@ namespace BlogApp.Data.Data
 
                 entity.HasOne(av => av.Article).WithMany(a => a.ArticleVotes).HasForeignKey(av => av.ArticleId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(av => av.User).WithMany(u => u.ArticleVotes).HasForeignKey(av => av.UserId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(av => av.User).WithMany(u => u.ArticleVotes).HasForeignKey(av => av.UserId).OnDelete(DeleteBehavior.Restrict);
             });
 
             builder.Entity<Comment>(entity =>
             {
                 entity.HasOne(c => c.Article).WithMany(a => a.Comments).HasForeignKey(c => c.ArticleId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(c => c.User).WithMany(u => u.Comments).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(c => c.User).WithMany(u => u.Comments).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.Restrict);
             });
 
             builder.Entity<Report>(entity =>
@@ -52,7 +52,7 @@ namespace BlogApp.Data.Data
 
                 entity.HasOne(r => r.Comment).WithMany(c => c.Reports).HasForeignKey(r => r.CommentId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(r => r.User).WithMany(u => u.Reports).HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(r => r.User).WithMany(u => u.Reports).HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.Restrict);
             });
 
             base.OnModelCreating(builder);

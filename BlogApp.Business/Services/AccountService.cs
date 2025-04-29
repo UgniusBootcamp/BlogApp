@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using AutoMapper;
 using BlogApp.Business.Interfaces;
 using BlogApp.Data.Constants;
@@ -18,9 +19,57 @@ namespace BlogApp.Business.Services
         UserManager<User> userManager,
         IMapper mapper,
         SignInManager<User> signInManager,
-        IValidationService validationService
+        IValidationService validationService,
+        IJWTService jwtTokenService
         ) : IAccountService
     {
+
+        /// <summary>
+        /// Method for creating refresh token
+        /// </summary>
+        /// <param name="sessionId">session id</param>
+        /// <param name="userId">user id</param>
+        /// <returns>created refresh token</returns>
+        public async Task<string> CreateRefreshTokenAsync(string userId)
+        {
+            var user = await accountRepository.FindUserByIdAsync(userId);
+
+            if (user == null)
+                throw new NotFoundException(ServiceConstants.UsersNotFound);
+
+            return jwtTokenService.CreateRefreshToken(user.Id);
+        }
+
+        /// <summary>
+        /// Method to get access token from refresh token
+        /// </summary>
+        /// <param name="refreshToken">refresh token</param>
+        /// <returns>parsed access token</returns>
+        public async Task<AccessTokenDto> GetAccessTokenFromRefreshToken(string? refreshToken)
+        {
+            if (string.IsNullOrEmpty(refreshToken) ||
+                !jwtTokenService.TryParseRefreshToken(refreshToken, out var claims) ||
+                claims?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value is not string userId)
+            {
+                throw new BusinessRuleValidationException(ServiceConstants.InvalidRefreshToken);
+
+            }
+
+            var user = await accountRepository.FindUserByIdAsync(userId);
+
+            if (user == null)
+                throw new NotFoundException(ServiceConstants.UsersNotFound);
+
+            var userRoles = await accountRepository.GetUserRolesAsync(user);
+
+            var accessToken = jwtTokenService.CreateAccessToken(user.UserName!, user.Id, userRoles);
+
+            return new AccessTokenDto
+            {
+                UserId = user.Id,
+                Token = accessToken
+            };
+        }
 
         /// <summary>
         /// Method for login
@@ -205,6 +254,34 @@ namespace BlogApp.Business.Services
         public async Task LogOutAsync()
         {
             await signInManager.SignOutAsync();
+        }
+
+        public async Task<AccessTokenDto> LoginApi(LoginDto loginDto)
+        {
+            var user = await accountRepository.FindUserByUsernameAsync(loginDto.Credentials) ??
+                await accountRepository.FindUserByEmailAsync(loginDto.Credentials);
+
+            if (user == null)
+                throw new UnauthorizedException(ServiceConstants.SignInFailedMessage);
+
+            var isPasswordValid = await accountRepository.IsPasswordValidAsync(user, loginDto.Password);
+
+            if (!isPasswordValid)
+                throw new UnauthorizedException(ServiceConstants.SignInFailedMessage);
+
+            var isEmailConfirmed = await accountRepository.IsEmailConfirmedAsync(user);
+            if (!isEmailConfirmed)
+                throw new EmailNotConfirmedException(ServiceConstants.EmailIsNotConfirmed);
+
+            var userRoles = await accountRepository.GetUserRolesAsync(user);
+
+            var accessToken = jwtTokenService.CreateAccessToken(user.UserName!, user.Id, userRoles);
+
+            return new AccessTokenDto
+            {
+                UserId = user.Id,
+                Token = accessToken
+            };
         }
     }
 

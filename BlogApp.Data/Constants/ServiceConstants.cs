@@ -37,5 +37,10 @@
         public const string CommentNotFound = "Comment not found";
         public const string CommentNotBelongsToUser = "Comment does not belong to user";
         public const string ReportCanBeCreatedOnceByUser = "Report can be created once by user";
+        public const string NoContent = "No content";
+        public const string ValidationError = "Validation error";
+        public const string Unauthorized = "Unauthorized";
+        public const string Forbidden = "Forbidden";
+        public const string InvalidRefreshToken = "Invalid refresh token";
     }
 }
