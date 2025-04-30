@@ -79,6 +79,16 @@
                                 </a>
                             </div>
                         }
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
+                            <div class="hidden space-x-6 sm:flex">
+                                <a asp-controller=@ControllerConstants.Comment
+                                   asp-action=@ControllerConstants.ReportedComments
+                                   class="text-white transition-colors duration-300 hover:text-indigo-600 bg-transparent border-none cursor-pointer">
+                                    Reports
+                                </a>
+                            </div>
+                        }
                         <div class="hidden space-x-6 sm:flex">
                             <a asp-controller=@ControllerConstants.Account
                                asp-action=@ControllerConstants.Profile

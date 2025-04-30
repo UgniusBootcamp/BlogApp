@@ -28,14 +28,14 @@ namespace BlogApp.Business.Interfaces
         /// </summary>
         /// <param name="userId">user id</param>
         /// <param name="articleCreateDto">article create dto</param>
-        public Task CreateArticleAsync(string userId, ArticleCreateDto articleCreateDto);
+        public Task<ArticleDto> CreateArticleAsync(string userId, ArticleCreateDto articleCreateDto);
 
         /// <summary>
         /// Method to update article
         /// </summary>
         /// <param name="userId">user id</param>
         /// <param name="articleUpdateDto">article update dto</param>
-        public Task UpdateArticleAsync(string userId, ArticleUpdateDto articleUpdateDto);
+        public Task<ArticleDto> UpdateArticleAsync(string userId, ArticleUpdateDto articleUpdateDto);
 
         /// <summary>
         /// Method to delete article

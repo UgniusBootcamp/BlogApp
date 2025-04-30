@@ -22,7 +22,7 @@ namespace BlogApp.Business.Services
         /// </summary>
         /// <param name="userId">user id</param>
         /// <param name="articleCreateDto">article create dto</param>
-        public async Task CreateArticleAsync(string userId, ArticleCreateDto articleCreateDto)
+        public async Task<ArticleDto> CreateArticleAsync(string userId, ArticleCreateDto articleCreateDto)
         {
             var article = mapper.Map<Article>(articleCreateDto);
 
@@ -37,6 +37,8 @@ namespace BlogApp.Business.Services
                 article.ImageUrl = imageUrl;
                 await articleRepository.UpdateArticleAsync(article);
             }
+
+            return mapper.Map<ArticleDto>(article);
         }
 
         /// <summary>
@@ -155,7 +157,7 @@ namespace BlogApp.Business.Services
         /// <param name="articleUpdateDto">article update dto</param>
         /// <exception cref="NotFoundException">if article not found</exception>
         /// <exception cref="ForbiddenException">article does not belong to user</exception>
-        public async Task UpdateArticleAsync(string userId, ArticleUpdateDto articleUpdateDto)
+        public async Task<ArticleDto> UpdateArticleAsync(string userId, ArticleUpdateDto articleUpdateDto)
         {
             var article = await articleRepository.GetArticleAsync(articleUpdateDto.Id);
 
@@ -182,6 +184,8 @@ namespace BlogApp.Business.Services
             mapper.Map(articleUpdateDto, article);
 
             await articleRepository.UpdateArticleAsync(article);
+
+            return mapper.Map<ArticleDto>(article);
         }
     }
 }

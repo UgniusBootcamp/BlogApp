@@ -38,6 +38,20 @@ namespace BlogApp.Data.Interfaces
         /// <param name="commentId">comment id</param>
         /// <returns>comment by id</returns>
         public Task<Comment?> GetCommentByIdAsync(int commentId);
+
+        /// <summary>
+        /// Method to get last comment of article
+        /// </summary>
+        /// <param name="articleId">article id</param>
+        /// <returns>last article comment</returns>
         public Task<Comment?> GetLastArticleCommentByIdAsync(int articleId);
+
+        /// <summary>
+        /// Method to get paginated reported comments
+        /// </summary>
+        /// <param name="pageIndex">page index</param>
+        /// <param name="pageSize">page size</param>
+        /// <returns>paginated reported comments</returns>
+        public Task<PaginatedList<Comment>> GetPaginatedReportedCommentsAsync(int pageIndex, int pageSize);
     }
 }

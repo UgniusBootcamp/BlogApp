@@ -62,5 +62,10 @@ namespace BlogApp.Business.Interfaces
         /// Method for logging out
         /// </summary>
         public Task LogOutAsync();
+
+        public Task<string> CreateRefreshTokenAsync(string userId);
+        public Task<AccessTokenDto> GetAccessTokenFromRefreshToken(string? refreshToken);
+
+        public Task<AccessTokenDto> LoginApi(LoginDto loginDto);
     }
 }

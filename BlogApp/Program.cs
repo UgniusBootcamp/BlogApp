@@ -34,7 +34,7 @@ builder.Services.Configure<EmailConfiguration>(
 
 builder.Services.AddDbContext<BlogAppDbContext>(options =>
 {
-    options.UseSqlite(builder.Configuration.GetConnectionString("LocalDatabase"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDatabase"));
 });
 
 //Azure blob
@@ -60,6 +60,8 @@ builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IArticleVoteService, ArticleVoteService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IJWTService, JWTService>();
 
 //Add repos
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -67,6 +69,7 @@ builder.Services.AddScoped<IRoleRequestRepository, RoleRequestRepository>();
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IArticleVoteRepository, ArticleVoteRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 //Add Identity
 builder.Services.AddIdentity<User, IdentityRole>()
